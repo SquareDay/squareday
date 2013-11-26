@@ -77,10 +77,10 @@
 				
 					
 						<h1>
-							Location
+							Where are you?
 						</h1><input type="text" name="location" id="venueLocation">
 						<h1>
-							Name
+							What are you looking for?
 						</h1><input type="text" name="name" id="venueName">
 					
 				
@@ -118,6 +118,10 @@
 		             <input id="timepicker1" type="text" class="input-small">
 		             <span class="add-on"><i class="icon-time"></i></span>
 		         </div>
+	   		  <div class="input-append bootstrap-timepicker">
+	   		             <input id="timepicker2" type="text" class="input-small">
+	   		             <span class="add-on"><i class="icon-time"></i></span>
+	   		         </div>
 		</div>
 		
 		<script>
@@ -133,6 +137,7 @@
 				$("#dialog").dialog();
 					//$( "#currItin" ).append("<li class='list-group-item'>" + $(this).text()) + "</li>";
 		  		         $('#timepicker1').timepicker();
+						  $('#timepicker2').timepicker();
 				});
 	
 		}

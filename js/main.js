@@ -1,7 +1,7 @@
 window.onload = function() {
-	$("#venueName").keyup(function() {
+	$("#venueName").change(function() {
 		var query = $("#venueName").val();
-		var location = window.location.href.split("location=")[1].split("?")[0];
+		var location = $("#venueLocation").val();
 		fetchVenues(query,location);
 	});
 }
@@ -19,7 +19,7 @@ function fetchVenues(query,location) {
 function displayVenues(theList) {
 	var finalHTML = "";
 	for (var i=0; i<theList.response.venues.length; i++) {
-		var address = theList.response.venues[i].location.crossStreet;
+		var address = theList.response.venues[i].location.address;
 		var name = theList.response.venues[i].name;
 		finalHTML = finalHTML+'<li><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li>';
 	}

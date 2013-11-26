@@ -6,6 +6,7 @@ var query = new Parse.Query(Itineraries);
     	success:function(results) {
     		window.allItineraries = results;
     		window.currentItin = window.allItineraries[0].id;
+    		displayItin(window.currentItin);
     	}
 	});
 
@@ -62,10 +63,10 @@ function addVenue(venue,itinToAddTo) {
   	});
 }
 
-function displayItin(itinID) {
-	query.get(itinID, {
-		success: function(gameScore) {
-	    
+function displayItin(itinToDisplay) {
+	query.get(itinToDisplay, {
+		success: function(itinObject) {
+	    	$("h4.list-group-item-heading").text(itinObject.get("name"));
 		}
   	});
 }

@@ -27,7 +27,7 @@ function fetchVenues(query,location) {
 	});
 }
 
-function displayVenues(theList) {
+function displayVenues(theItinToDisplay) {
 	var finalHTML = "";
 	for (var i=0; i<theList.response.venues.length; i++) {
 		var address = theList.response.venues[i].location.address;

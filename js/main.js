@@ -5,8 +5,8 @@ var query = new Parse.Query(Itineraries);
 	query.find({
     	success:function(results) {
     		window.allItineraries = results;
+    		generateItinUL(results);
     		window.currentItin = window.allItineraries[0].id;
-    		displayItin(window.currentItin);
     	}
 	});
 
@@ -26,21 +26,6 @@ function fetchVenues(query,location) {
 	}).done( function(theList) {
 		displayVenues(theList);
 	});
-}
-
-function displayVenues(theItinToDisplay) {
-	var finalHTML = "";
-	for (var i=0; i<theList.response.venues.length; i++) {
-		var address = theList.response.venues[i].location.address;
-		var name = theList.response.venues[i].name;
-		finalHTML = finalHTML+'<li><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li>';
-	}
-	$("#venueList").html(finalHTML);
-	addVenue(theList.response.venues[0],window.currentItin);
-}
-
-function addItin() {
-	
 }
 
 function addVenue(venue,itinToAddTo) {
@@ -63,10 +48,40 @@ function addVenue(venue,itinToAddTo) {
   	});
 }
 
+function generateItinUL(results) {
+	finalHTML = "";
+	for (var i=0; i<results.length; i++) {
+		finalHTML = finalHTML + "<h4 id='"+results[i].id+"'>"+results[i]._serverData.name+"</h4>"
+	}
+	$("#itinList").html(finalHTML);
+	$("#itinList h4").click(function() {
+		window.currentItin = $(this).attr("id");
+		displayItin(window.currentItin);
+	})
+}
+
 function displayItin(itinToDisplay) {
 	query.get(itinToDisplay, {
 		success: function(itinObject) {
-	    	$("h4.list-group-item-heading").text(itinObject.get("name"));
+	    	$("h4#currItinTitle").text(itinObject.get("name"));
+	    	var finalHTML = " ";
+	    	var venues = itinObject.get("venues");
+	    	if (venues != undefined) {
+		    	for (var i=0; i<venues.length; i++) {
+		    	finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+venues[i].name+' </span><span class="location">AT '+venues[i].location.address+'</span></li></a>';
+				}
+	    	}
+	    	$("ul#currItin").html(finalHTML);
 		}
   	});
+}
+
+function displayVenues(theList) {
+	var finalHTML = "";
+	for (var i=0; i<theList.response.venues.length; i++) {
+		var address = theList.response.venues[i].location.address;
+		var name = theList.response.venues[i].name;
+		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li></a>';
+	}
+	$("#venueList").html(finalHTML);
 }

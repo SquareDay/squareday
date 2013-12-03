@@ -1,4 +1,5 @@
 { "type": "FeatureCollection", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": [ 
+{ "type": "Feature", "properties": { "Name": "hilagutfreund", "Description": "Mon Dec  2 21:18:13 EST 2013; Location Accuracy: " }, "geometry": { "type": "Point", "coordinates": [ , , 0.0 ] } },
 { "type": "Feature", "properties": { "Name": "William Falk-Wallace", "Description": "Mon Dec  2 20:14:49 EST 2013; Location Accuracy: 65.000000" }, "geometry": { "type": "Point", "coordinates": [ -73.959932, 40.808947, 0.0 ] } },
 <<<<<<< HEAD
 { "type": "Feature", "properties": { "Name": "William Falk-Wallace", "Description": "Mon Dec  2 20:14:36 EST 2013; Location Accuracy: 65.000000" }, "geometry": { "type": "Point", "coordinates": [ -73.959944, 40.808954, 0.0 ] } },

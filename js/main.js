@@ -53,8 +53,8 @@ function generateItinUL(results) {
 	for (var i=0; i<results.length; i++) {
 		finalHTML = finalHTML + "<li id='"+results[i].id+"'><a>"+results[i]._serverData.name+"</a></li>"
 	}
-	$("#mySquaredays ul").html(finalHTML);
-	$("#mySquaredays ul li").click(function() {
+	$("#mySquaredays #auto").html(finalHTML);
+	$("#mySquaredays #auto li").click(function() {
 		window.currentItin = $(this).attr("id");
 		displayItin(window.currentItin);
 	})

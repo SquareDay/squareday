@@ -92,21 +92,6 @@
 		
 		
 		<script>
-		function displayVenues(theList) {
-			var finalHTML = "";
-			for (var i=0; i<theList.response.venues.length; i++) {
-				var address = theList.response.venues[i].location.address;
-				var name = theList.response.venues[i].name;
-				finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li></a>';
-			}
-			$("#venueList").html(finalHTML);
-			$( '#venueList li' ).click(function( event ) {
-				$("#dialog").dialog();
-		  		         $('#timepicker1').timepicker();
-						  $('#timepicker2').timepicker();
-				});
-	
-		}
 	
 		</script>
 	</body>

@@ -22,7 +22,7 @@ function displayItin(itinToDisplay) {
 			window.map.setView([markerObject[0].geometry.coordinates[1],markerObject[0].geometry.coordinates[0]], 11)
 			$("#addNewButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
-	    }
+		}
 	});
 }
 

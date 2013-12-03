@@ -80,7 +80,11 @@ function displayVenues(theList) {
 	$("#venueList").html("<img width='20' src='./css/img/ajax_loader.gif' />");
 	var finalHTML = "";
 	for (var i=0; i<theList.response.venues.length; i++) {
-		var address = theList.response.venues[i].location.address;
+		if (theList.response.venues[i].location.address != undefined && theList.response.venues[i].location.city != undefined && theList.response.venues[i].location.state != undefined) {
+			var address = theList.response.venues[i].location.address+". "+theList.response.venues[i].location.city+", "+theList.response.venues[i].location.state;
+		} else {
+			var address = "";
+		}
 		var name = theList.response.venues[i].name;
 		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
 	}

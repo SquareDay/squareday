@@ -7,8 +7,6 @@ var pqresult = new Parse.Query(Itineraries);
     		window.allItineraries = results;
     		generateItinUL(results);
     		window.currentItin = window.allItineraries[0].id;
-    		// console.dir(window.currentItin);
-    		displayItin(window.currentItin);
     	}
 	});
 

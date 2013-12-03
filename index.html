@@ -1,32 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 <head>
-	<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-	<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-	<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-	<!--[if gt IE 8]><!--><!--<![endif]-->
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title></title>
+	<title>SquareDay</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 
+	<!-- vendor stylesheets-->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<style>
-	body {
-		padding-top: 50px;
-		padding-bottom: 20px;
-	}
-	</style>
-	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="css/main.css">
-	<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 	<link type="text/css" href="css/bootstrap-timepicker.min.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.css" />
 	
+	<!--vendor javascript-->
+	<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="js/vendor/parse-1.2.13.min.js"></script>
+	<script src="js/vendor/bootstrap-timepicker.min.js"></script>
+	<script src="js/vendor/bootstrap.min.js"></script>
+	<script src="http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js"></script>
+	
+	<!--custom javascript-->
+	<script src="js/itinerary.js"></script>
+	<script src="js/main.js"></script>
+	
+	<!--custom stylesheets-->
 	<link rel="stylesheet" href="css/main.css" type="text/css">
-	
+
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -38,7 +40,6 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button> 
-				<a class="navbar-brand" href="#">Square Day</a>
 			</div>
 
 			<div class="navbar-collapse collapse">
@@ -51,96 +52,55 @@
 						<ul class="dropdown-menu">
 							<span id="auto"></span>
 							<span id="addnew">
-								<li class="divider"></li>
-								<li><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus"></span> Add New Itenerary</button>
+								<li><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus"></span> Add New Itinerary</button>
 							</span>
 						</ul>
 					</li>
 				</ul>
+				<button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button>
 			</div><!--/.navbar-collapse -->
 
 			<!-- </div> -->
 		</div>
 	</div>
+
+	<div id="introSplash">
+		<h1>SquareDay</h1>
+		<h2>Tagline here</h2>
+		<p>More infior adnfasdnjfjakld fajf jadfj ajlf; ja;j fl;asjdfk jakls;djf ;lkajskl;df ja;lsjf ;lkajsf ;ljals;dfj l;af</p>
+	</div>
 	
+	<div id="venuesMap"></div>
+	
+	<div class="col-md-2"></div>
 	<div class="col-md-8">
+		<div class="itin"></div>
+		<div class="modal fade" id="addNew" role="dialog" tabindex="-1" aria-hidden="true">
+			<div class ="modal-dialog">
+				<div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				    <h4 class="modal-title">New Venue</h4>
+				 </div>
+				<div class="modal-content">
+					<p>
+						<div class="input-group">
+						<input type="text" class="form-control" placeholder="Where are you?" name="location" id="venueLocation">
+						</div>
+						
+						<div class="input-group">
+						<input type="text" class="form-control" placeholder="What are you looking for?" name="location" id="venueName">
+						</div>
+							
+						<div class="list-group" id="results-list">
+							<ul id="venueList"></ul>	
+							<div id="venueMeta"> 
+							</div>
+						</div>
+					</p>
+				</div> <!--/modal dialog-->
+			</div> <!--/modal content-->
+		</div> <!--/modal fade -->
+	</div> <!--/col-md-8 -->
 
-		<h1>
-			Where are you?
-		</h1><input type="text" name="location" id="venueLocation">
-		<h1>
-			What are you looking for?
-		</h1><input type="text" name="name" id="venueName">
-
-
-		<div class="list-group" id="results-list">
-
-			<ul id="venueList"></ul>
-
-		</div>
-
-		<div class="container" >
-			<div class="list-group">
-				<h4 id="currItinTitle" class="list-group-item-heading">My Square Day Itin</h4>
-				<ul id="currItin"></ul>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
-
-<div class="col-md-4">
-	<div class="list-group" id="itin-list">
-		<ul id="itinList">
-			<h4 class="list-group-item-heading">MY Itineraries</h4>
-
-		</ul>
-	</div>
-</div>
-
-
-
-<div id="dialog" title="When?">
-	<p>When do you want to be there?</p>
-	<div class="input-append bootstrap-timepicker">
-		<input id="timepicker1" type="text" class="input-small">
-		<span class="add-on"><i class="icon-time"></i></span>
-	</div>
-	<div class="input-append bootstrap-timepicker">
-		<input id="timepicker2" type="text" class="input-small">
-		<span class="add-on"><i class="icon-time"></i></span>
-	</div>
-	<a class="btn btn-primary btn-sm" role="button" id="sendVenue">Send</a></p>
-</div>
-
-
-
-
-
-<script>
-function displayVenues(theList) {
-	var finalHTML = "";
-	for (var i=0; i<theList.response.venues.length; i++) {
-		var address = theList.response.venues[i].location.address;
-		var name = theList.response.venues[i].name;
-		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li></a>';
-	}
-	$("#venueList").html(finalHTML);
-	$( '#venueList li' ).click(function( event ) {
-		$("#dialog").dialog();
-		$('#timepicker1').timepicker();
-		$('#timepicker2').timepicker();
-	});
-	
-}
-
-</script>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
-<script src="js/vendor/parse-1.2.13.min.js"></script>
-<script type="text/javascript" src="js/vendor/bootstrap-timepicker.min.js"></script>
-<script src="js/vendor/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>

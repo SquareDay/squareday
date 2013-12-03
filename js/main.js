@@ -6,12 +6,13 @@ var pqresult = new Parse.Query(Itineraries);
     	success:function(results) {
     		window.allItineraries = results;
     		generateItinUL(results);
-    		window.currentItin = window.allItineraries[0].id;
+    		window.currentItin = undefined;
     	}
 	});
 
 window.onload = function() {
 	$("#venueName").keyup(function() {
+		$("#venueMeta").hide();
 		var query = $("#venueName").val();
 		var location = $("#venueLocation").val();
 		fetchVenues(query,location);
@@ -51,7 +52,7 @@ function addVenue(venue,itinToAddTo) {
 function generateItinUL(results) {
 	finalHTML = "";
 	for (var i=0; i<results.length; i++) {
-		finalHTML = finalHTML + "<li id='"+results[i].id+"'><a>"+results[i]._serverData.name+"</a></li>"
+		finalHTML = finalHTML + "<li id='"+results[i].id+"'>"+results[i]._serverData.name+"</li>"
 	}
 	$("#mySquaredays #auto").html(finalHTML);
 	$("#mySquaredays #auto li").click(function() {
@@ -70,7 +71,36 @@ function displayVenues(theList) {
 			var address = "";
 		}
 		var name = theList.response.venues[i].name;
-		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
+		finalHTML = finalHTML+'<a href="#"><li class="list-group-item" id="'+i+'"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
 	}
 	$("#venueList").html(finalHTML);
+	$("#venueList li" ).click(function( event ) {
+		$("#venueMeta").show();
+		window.currentlySelectedVenueID = $(this).attr("id");
+		var moreHTML = '<div class="input-append bootstrap-timepicker"><span>Start Time </span><input id="timepickerStart" type="text" class="input-small"><span class="add-on"><i class="icon-time"></i></span></div><div class="input-append bootstrap-timepicker"><span>End Time </span><input id="timepickerEnd" type="text" class="input-small"><span class="add-on"><i class="icon-time"></i></span></div><div class="input-group"><br /><input type="text" class="input-large" placeholder="Description" id="userDescription"></div><button type="button" class="btn btn-primary" id="sendVenue">Save</button>';
+		$("#venueMeta").html(moreHTML);
+		$('#timepickerStart').timepicker();
+		$('#timepickerEnd').timepicker();
+		$("#venueMeta button").click(function() {
+			var currentVenue = theList.response.venues[window.currentlySelectedVenueID];
+			var startTime = convertTimeStringToHours($("#timepickerStart").val());
+			var endTime = convertTimeStringToHours($("#timepickerEnd").val());
+			currentVenue.timeStart = $("#timepickerStart").val();
+			currentVenue.timeEnd = $("#timepickerEnd").val();
+			currentVenue.description = $("#userDescription").val();
+			addVenue(currentVenue,window.currentItin);
+			displayItin(window.currentItin);
+		})
+	});	
+}
+
+function convertTimeStringToHours(timeString) {
+	if (timeString.split(" ")[1] == "PM") {
+		var hoursToAdd = 12;
+	} else {
+		var hoursToAdd = 0;
+	}
+	if (timeString.split(":")[0] == "12") { hoursToAdd = hoursToAdd-12; }
+	var hours = parseInt(timeString.split(":")[0])+hoursToAdd+(parseInt(timeString.split(":")[1])/60);
+	return hours;
 }

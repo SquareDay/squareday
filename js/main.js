@@ -1,12 +1,14 @@
 Parse.initialize("YSYKURfsGILaLBqVUnd1ViJqEL0FG05ng8qTI6OQ", "nGmU13RtnJqGIhrr5RQeHA6Th9wf23rc7tJwgw1J");
 var Itineraries = Parse.Object.extend("Itineraries");
 
-var query = new Parse.Query(Itineraries);
-	query.find({
+var pqresult = new Parse.Query(Itineraries);
+	pqresult.find({
     	success:function(results) {
     		window.allItineraries = results;
     		generateItinUL(results);
     		window.currentItin = window.allItineraries[0].id;
+    		// console.dir(window.currentItin);
+    		displayItin(window.currentItin);
     	}
 	});
 
@@ -29,7 +31,7 @@ function fetchVenues(query,location) {
 }
 
 function addVenue(venue,itinToAddTo) {
-	query.get(itinToAddTo, {
+	pqresult.get(itinToAddTo, {
 		success: function(itinObject) {
 			var currentVenues = itinObject.get("venues");
 	    	itinObject.save(null, {
@@ -58,22 +60,6 @@ function generateItinUL(results) {
 		window.currentItin = $(this).attr("id");
 		displayItin(window.currentItin);
 	})
-}
-
-function displayItin(itinToDisplay) {
-	query.get(itinToDisplay, {
-		success: function(itinObject) {
-	    	$("h4#currItinTitle").text(itinObject.get("name"));
-	    	var finalHTML = " ";
-	    	var venues = itinObject.get("venues");
-	    	if (venues != undefined) {
-		    	for (var i=0; i<venues.length; i++) {
-		    	finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+venues[i].name+' </span>testt<span class="location"> '+venues[i].location.address+'</span></li></a>';
-				}
-	    	}
-	    	$("ul#currItin").html(finalHTML);
-		}
-  	});
 }
 
 function displayVenues(theList) {

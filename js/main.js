@@ -7,8 +7,6 @@ var pqresult = new Parse.Query(Itineraries);
     		window.allItineraries = results;
     		generateItinUL(results);
     		window.currentItin = window.allItineraries[0].id;
-    		// console.dir(window.currentItin);
-    		displayItin(window.currentItin);
     	}
 	});
 
@@ -53,10 +51,10 @@ function addVenue(venue,itinToAddTo) {
 function generateItinUL(results) {
 	finalHTML = "";
 	for (var i=0; i<results.length; i++) {
-		finalHTML = finalHTML + "<h4 id='"+results[i].id+"'>"+results[i]._serverData.name+"</h4>"
+		finalHTML = finalHTML + "<li id='"+results[i].id+"'><a>"+results[i]._serverData.name+"</a></li>"
 	}
-	$("#itinList").html(finalHTML);
-	$("#itinList h4").click(function() {
+	$("#mySquaredays ul").html(finalHTML);
+	$("#mySquaredays ul li").click(function() {
 		window.currentItin = $(this).attr("id");
 		displayItin(window.currentItin);
 	})

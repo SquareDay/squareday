@@ -21,10 +21,19 @@ border: none;
     background: #CFF2FA;
 }
 
+.event-time {
+	font-size: .75em;
+	font-style: oblique;
+	color:#cccccc;
+}
 
+.event-img {
+	width:50px;
+}
 
-
-
+.event-btn:hover {
+	color:#cccccc;
+}
 
 
 

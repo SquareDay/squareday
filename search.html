@@ -17,11 +17,13 @@
 				padding-bottom: 20px;
 			}
 		</style>
-		<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
 		<link type="text/css" href="css/bootstrap-timepicker.min.css" />
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		
-		<link rel="stylesheet" href="css/main.css" type="text/css">
+		
+		
 		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
 		<script src="js/vendor/jquery-1.10.1.js" type="text/javascript"></script>
 		 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -85,6 +87,7 @@
 				  <div class="modal-footer">
 						      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						      <button type="button" class="btn btn-primary" id="sendVenue">Save</button>
+							  
 						       </div>
 						   </div> <!-- /modal content -->
 					   </div> <!-- .modal-dialog -->
@@ -95,6 +98,35 @@
 	
 		
 		
+		<script>
+		
+		
+		function displayVenues(theList) {
+			$("#venueList").html("<img width='20' src='./css/img/ajax_loader.gif' />");
+			var finalHTML = "";
+			for (var i=0; i<theList.response.venues.length; i++) {
+				if (theList.response.venues[i].location.address != undefined && theList.response.venues[i].location.city != undefined && theList.response.venues[i].location.state != undefined) {
+					var address = theList.response.venues[i].location.address+". "+theList.response.venues[i].location.city+", "+theList.response.venues[i].location.state;
+				} else {
+					var address = "";
+				}
+				var name = theList.response.venues[i].name;
+				finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
+			}
+		
+			$("#venueList").html(finalHTML);
+			$( '#venueList li' ).click(function( event ) {
+					$("#dialog").dialog();
+			  		         $('#timepicker1').timepicker();
+							  $('#timepicker2').timepicker();
+					});
+	
+			}
+			
+		
 
+		
+	
+		</script>
 	</body>
 </html>

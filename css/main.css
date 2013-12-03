@@ -4,6 +4,36 @@
    Author's custom styles
    ========================================================================== */
 
+.modal-dialog .input-group {
+	width:90%;
+	margin:10px auto;
+}
+
+.modal-dialog .input-group input {
+	margin:0;
+}
+
+#venueList {
+	padding:0;
+	margin:auto;
+	width:100%;
+}
+
+#venueList li {
+	padding:5px 5%;
+	width:100%;
+	margin:0;
+	color:black;
+}
+
+#venueList li .title {
+	font-weight:bold;
+}
+
+#venueList li .location {
+	font-size: 10px;
+	color: gray;
+}
 
 #venuesMap {
 	height:300px;

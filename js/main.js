@@ -11,7 +11,7 @@ var pqresult = new Parse.Query(Itineraries);
 	});
 
 window.onload = function() {
-	$("#venueName").change(function() {
+	$("#venueName").keyup(function() {
 		var query = $("#venueName").val();
 		var location = $("#venueLocation").val();
 		fetchVenues(query,location);

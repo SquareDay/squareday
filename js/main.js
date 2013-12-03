@@ -17,6 +17,50 @@ window.onload = function() {
 		var location = $("#venueLocation").val();
 		fetchVenues(query,location);
 	});
+	$("#home").click(function() {
+		changeMenu('home');
+	});
+	$("#about").click(function() {
+		changeMenu('about');
+	});
+	$("#addNewItinButton").click(function() {
+		var itinerary = new Itineraries();
+		itinerary.set("name", $("#addNewItin #itinName").val());
+		itinerary.save(null);
+		pqresult.find({
+    		success:function(results) {
+    			window.allItineraries = results;
+    			generateItinUL(results);
+    			$('#addNewItin').modal('hide');
+    		}
+		});
+	});
+	$("#deleteItinButton").click(function() {
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				itinObject.destroy();
+				changeMenu('home');
+				pqresult.find({
+    				success:function(results) {
+    					window.allItineraries = results;
+    					generateItinUL(results);
+    					$('#addNewItin').modal('hide');
+    				}
+				});
+	   		}
+		});
+	});
+}
+
+function changeMenu(dest) {
+	$("#venuesMap").animate({height:"105%"},500);
+	$("#introHome, #introAbout").css("display","none");
+	$("#intro"+dest.charAt(0).toUpperCase()+dest.slice(1)).css("display","block");
+	$("#home").removeClass("active");
+	$("#about").removeClass("active");
+	$(dest).addClass("active");
+	$(".itin").html("");
+	$("#addNewButton, #addNewItin").animate({opacity:0},500);
 }
 
 function fetchVenues(query,location) {

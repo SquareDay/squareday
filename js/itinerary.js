@@ -1,8 +1,6 @@
 	
 function displayItin(itinToDisplay) {
-	$("#venuesMap").show(function() {
-		$(this).animate({opacity:1},500)
-	});
+
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
 			$("h4#currItinTitle").text(itinObject.get("name"));

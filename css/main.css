@@ -7,8 +7,19 @@
 
 
 
+.list-group-item {
+position: relative;
+display: block;
+padding: 15px 15px;
+margin-bottom: -1px;
+background-color: #fff;
+border: none;
 
+}
 
+.list-group-item:hover {
+    background: #CFF2FA;
+}
 
 
 

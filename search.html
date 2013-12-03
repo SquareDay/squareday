@@ -61,18 +61,31 @@
 		</div>
 		
 		
-		<div id="dialog" title="When?">
-		  <p>When do you want to be there?</p>
-		  <div class="input-append bootstrap-timepicker">
+		
+		<div class="modal fade" id="dialog" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+					</div> <!-- /modal header-->
+						
+					<div class="input-append bootstrap-timepicker">
 		             <input id="timepicker1" type="text" class="input-small">
 		             <span class="add-on"><i class="icon-time"></i></span>
-		         </div>
-	   		  <div class="input-append bootstrap-timepicker">
-	   		             <input id="timepicker2" type="text" class="input-small">
-	   		             <span class="add-on"><i class="icon-time"></i></span>
-	   		         </div>
-					 <a class="btn btn-primary btn-sm" role="button" id="sendVenue">Send</a></p>
-		</div>
+		          </div>
+				 
+		   		  <div class="input-append bootstrap-timepicker">
+		   		             <input id="timepicker2" type="text" class="input-small">
+		   		             <span class="add-on"><i class="icon-time"></i></span>
+		   		         </div>
+					
+				  <div class="modal-footer">
+						      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						      <button type="button" class="btn btn-primary" id="sendVenue">Save</button>
+						       </div>
+						   </div> <!-- /modal content -->
+					   </div> <!-- .modal-dialog -->
+		
+	</div>
 		
 		
 		

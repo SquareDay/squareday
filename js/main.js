@@ -68,7 +68,7 @@ function displayItin(itinToDisplay) {
 	    	var venues = itinObject.get("venues");
 	    	if (venues != undefined) {
 		    	for (var i=0; i<venues.length; i++) {
-		    	finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+venues[i].name+' </span><span class="location">AT '+venues[i].location.address+'</span></li></a>';
+		    	finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+venues[i].name+' </span>testt<span class="location"> '+venues[i].location.address+'</span></li></a>';
 				}
 	    	}
 	    	$("ul#currItin").html(finalHTML);
@@ -77,11 +77,12 @@ function displayItin(itinToDisplay) {
 }
 
 function displayVenues(theList) {
+	$("#venueList").html("<img width='20' src='./css/img/ajax_loader.gif' />");
 	var finalHTML = "";
 	for (var i=0; i<theList.response.venues.length; i++) {
 		var address = theList.response.venues[i].location.address;
 		var name = theList.response.venues[i].name;
-		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location">AT '+address+'</span></li></a>';
+		finalHTML = finalHTML+'<a href="#"><li class="list-group-item"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
 	}
 	$("#venueList").html(finalHTML);
 }

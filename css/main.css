@@ -150,12 +150,16 @@ body.modal-open {
 	margin-left:5px;
 }
 
-#addNewItin button {
+#addNewItinbutton {
 	font-size:12px;
 	padding:5px;
 	width:90%;
 	margin-left:5%;
-	margin-bottom:10px;
+	margin-bottom:30px;
+}
+
+.modal-title {
+	color:#000;
 }
 
 .input-group .form-control {

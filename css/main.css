@@ -146,6 +146,10 @@ body.modal-open {
 	margin:30px 0;
 }
 
+.itin .glyphicon {
+	margin-left:5px;
+}
+
 #addNewItin button {
 	font-size:12px;
 	padding:5px;

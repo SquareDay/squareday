@@ -2,7 +2,8 @@
 function displayItin(itinToDisplay) {
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
-			$("#introSplash").hide();
+			$("#introHome").hide();
+			$("#introAbout").hide();
 			var finalHTML = "<h2>My "+itinObject.get("name")+" Itinerary</h2>";
 			var venues = itinObject.get("venues");
 			console.log(venues);
@@ -21,7 +22,9 @@ function displayItin(itinToDisplay) {
 			}
 			window.map.setView([markerObject[0].geometry.coordinates[1],markerObject[0].geometry.coordinates[0]], 11)
 			$("#addNewButton").animate({opacity:1},500);
+			$("#deleteItinButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
+			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class")); });
 	    }
 	});
 }

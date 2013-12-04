@@ -87,6 +87,7 @@ function addVenue(venue,itinToAddTo) {
 						itinObject.set("venues", currentVenues);
 						itinObject.save();	
 					}
+					displayItin(window.currentItin);
 				}
 			});
 		}
@@ -101,8 +102,15 @@ function generateItinUL(results) {
 	$("#mySquaredays #auto").html(finalHTML);
 	$("#mySquaredays #auto li").click(function() {
 		window.currentItin = $(this).attr("id");
+		$("#home").removeClass("active");
+		$("#about").removeClass("active");
+		$("#mySquaredays").addClass("active");
 		displayItin(window.currentItin);
 	})
+}
+
+function venueEdit(classes) {
+	console.log(classes);
 }
 
 function displayVenues(theList) {
@@ -133,7 +141,7 @@ function displayVenues(theList) {
 			currentVenue.timeEnd = $("#timepickerEnd").val();
 			currentVenue.description = $("#userDescription").val();
 			addVenue(currentVenue,window.currentItin);
-			displayItin(window.currentItin);
+			$('#addNew').modal('hide');
 		})
 	});	
 }

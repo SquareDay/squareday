@@ -8,10 +8,9 @@ function displayItin(itinToDisplay) {
 			var venues = itinObject.get("venues");
 			var markerObject = new Array();
 			if (venues != undefined) {
-				venues.sort(function(a,b){console.dir(a.timeStart - b.timeStart); return a.timeStart - b.timeStart});
-				console.log(venues);
+				venues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<venues.length; i++) {
-					console.log(venues[i].timeStart); 
+					// console.log(venues[i].timeStart); 
 					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+venues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-btn glyphicon glyphicon-plus-sign"></span><span class="event-btn glyphicon glyphicon-minus-sign"></span><span class="event-btn glyphicon glyphicon-question-sign"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+venues[i].timeStart+' - '+venues[i].timeEnd+'</span><br><p>'+venues[i].location.address+'</p><p>'+venues[i].description+'</p></div></div>';					
 					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [venues[i].location.lng, venues[i].location.lat]}, properties: { title: venues[i].name } };
 					markerObject.push(currentMarkerObject);
@@ -26,7 +25,7 @@ function displayItin(itinToDisplay) {
 			$("#deleteItinButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
 			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class")); });
-	    }
+		}
 	});
 }
 

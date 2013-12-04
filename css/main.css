@@ -182,7 +182,7 @@ body.modal-open {
     background: #CFF2FA;
 }
 
-.event-time {
+.event-time, .event-loc {
 	font-size: .75em;
 	font-style: oblique;
 	color:#cccccc;

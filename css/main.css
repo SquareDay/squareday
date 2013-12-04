@@ -196,6 +196,21 @@ body.modal-open {
 	color:#cccccc;
 }
 
+.intro-new-btn {
+	font-size: 8em;
+	color:#424546;
+}
+
+.intro-new-btn:hover {
+	color:#555;
+	cursor:pointer;
+}
+
+.intro-new-header {
+	margin-top: 20px;
+	margin-bottom: 0;
+}
+
 
 
 

@@ -44,19 +44,19 @@
 
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#about">About</a></li>
-					<li><a href="#contact">Contact</a></li>
+					<li class="active" id="home"><a href="#">Home</a></li>
+					<li id="about"><a href="#">About</a></li>
 					<li class="dropdown" id="mySquaredays">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">My SquareDays<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<span id="auto"></span>
 							<span id="addnew">
-								<li><button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-plus"></span> Add New Itinerary</button>
+								<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewItin"><span class="glyphicon glyphicon-plus"></span> Add New Itinerary</button>
 							</span>
 						</ul>
 					</li>
 				</ul>
+				<button id="deleteItinButton" class="btn btn-primary btn-lg">Delete This Itinerary</button>
 				<button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button>
 			</div><!--/.navbar-collapse -->
 
@@ -64,10 +64,13 @@
 		</div>
 	</div>
 
-	<div id="introSplash">
+	<div id="introHome">
 		<h1>SquareDay</h1>
-		<h2>Tagline here</h2>
-		<p>More infior adnfasdnjfjakld fajf jadfj ajlf; ja;j fl;asjdfk jakls;djf ;lkajskl;df ja;lsjf ;lkajsf ;ljals;dfj l;af</p>
+		<h2>you've never looked so organized.</h2>
+		<p>SquareDay organizes and visualize your plans using data from the FourSquare API. Each fully customizable itinerary contains information about where you'll be and when allowing you to plan and map your activities.</p>
+	</div>
+	<div id="introAbout">
+		<h1>SquareDay</h1>
 	</div>
 	
 	<div id="venuesMap"></div>
@@ -97,6 +100,22 @@
 							</div>
 						</div>
 					</p>
+				</div> <!--/modal dialog-->
+			</div> <!--/modal content-->
+		</div> <!--/modal fade -->
+		<div class="modal fade" id="addNewItin" role="dialog" tabindex="-1" aria-hidden="true">
+			<div class ="modal-dialog">
+				<div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				    <h4 class="modal-title">New Itinerary</h4>
+				 </div>
+				<div class="modal-content">
+					<p>
+						<div class="input-group">
+						<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+						</div>
+					</p>
+					<button id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
 				</div> <!--/modal dialog-->
 			</div> <!--/modal content-->
 		</div> <!--/modal fade -->

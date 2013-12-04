@@ -27,6 +27,7 @@ window.onload = function() {
 		var itinerary = new Itineraries();
 		itinerary.set("name", $("#addNewItin #itinName").val());
 		itinerary.save(null);
+		pqresult = new Parse.Query(Itineraries);
 		pqresult.find({
     		success:function(results) {
     			window.allItineraries = results;
@@ -40,6 +41,7 @@ window.onload = function() {
 			success: function(itinObject) {
 				itinObject.destroy();
 				changeMenu('home');
+				pqresult = new Parse.Query(Itineraries);
 				pqresult.find({
     				success:function(results) {
     					window.allItineraries = results;
@@ -60,7 +62,7 @@ function changeMenu(dest) {
 	$("#about").removeClass("active");
 	$(dest).addClass("active");
 	$(".itin").html("");
-	$("#addNewButton, #addNewItin").animate({opacity:0},500);
+	$("#addNewButton, #deleteItinButton").animate({opacity:0},500);
 }
 
 function fetchVenues(query,location) {
@@ -111,11 +113,18 @@ function generateItinUL(results) {
 
 function venueEdit(classes) {
 	var currFunction = classes.split(" ")[2].split("-")[1];
-	if (currFunction == "minus") {
-	
+	/*if (currFunction == "minus") {
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				var currentVenues = itinObject.get("venues");
+				itinObject.set("venues", currentVenues);
+				itinObject.save();
+				displayItin(window.currentItin);
+			};
+  		});
 	} else if (currFunction == "question") {
 	
-	}
+	}*/
 }
 
 function displayVenues(theList) {

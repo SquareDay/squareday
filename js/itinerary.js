@@ -10,8 +10,8 @@ function displayItin(itinToDisplay) {
 			if (venues != undefined) {
 				venues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<venues.length; i++) {
-					// console.log(venues[i].timeStart); 
-					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+venues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+venues[i].timeStart+' - '+venues[i].timeEnd+'</span><span class="event-loc pull-right">'+venues[i].location.address+'</span><br><p>'+venues[i].description+'</p></div></div>';					
+					fetchImage(venues[i].id); 
+					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+venues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+venues[i].timeStart+' - '+venues[i].timeEnd+'</span><span class="event-loc pull-right">'+venues[i].location.address+'</span><br><p>'+venues[i].description+'</p></div></div>';
 					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [venues[i].location.lng, venues[i].location.lat]}, properties: { title: venues[i].name } };
 					markerObject.push(currentMarkerObject);
 				}
@@ -32,3 +32,15 @@ function displayItin(itinToDisplay) {
 $(function () {
 	window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
 });
+
+
+function fetchImage(id) {
+	fetchURL = 'https://api.foursquare.com/v2/venues/'+id+'/photos?client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125&limit=1'
+	$.ajax({
+		url: fetchURL,
+		context: document.body
+	}).done( function(thePhoto) {
+		console.dir(thePhoto);
+		//prefix + size(36x36) + suffix
+	});
+}

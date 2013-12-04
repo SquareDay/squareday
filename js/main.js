@@ -17,6 +17,52 @@ window.onload = function() {
 		var location = $("#venueLocation").val();
 		fetchVenues(query,location);
 	});
+	$("#home").click(function() {
+		changeMenu('home');
+	});
+	$("#about").click(function() {
+		changeMenu('about');
+	});
+	$("#addNewItinButton").click(function() {
+		var itinerary = new Itineraries();
+		itinerary.set("name", $("#addNewItin #itinName").val());
+		itinerary.save(null);
+		pqresult = new Parse.Query(Itineraries);
+		pqresult.find({
+    		success:function(results) {
+    			window.allItineraries = results;
+    			generateItinUL(results);
+    			$('#addNewItin').modal('hide');
+    		}
+		});
+	});
+	$("#deleteItinButton").click(function() {
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				itinObject.destroy();
+				changeMenu('home');
+				pqresult = new Parse.Query(Itineraries);
+				pqresult.find({
+    				success:function(results) {
+    					window.allItineraries = results;
+    					generateItinUL(results);
+    					$('#addNewItin').modal('hide');
+    				}
+				});
+	   		}
+		});
+	});
+}
+
+function changeMenu(dest) {
+	$("#venuesMap").animate({height:"105%"},500);
+	$("#introHome, #introAbout").css("display","none");
+	$("#intro"+dest.charAt(0).toUpperCase()+dest.slice(1)).css("display","block");
+	$("#home").removeClass("active");
+	$("#about").removeClass("active");
+	$(dest).addClass("active");
+	$(".itin").html("");
+	$("#addNewButton, #deleteItinButton").animate({opacity:0},500);
 }
 
 function fetchVenues(query,location) {
@@ -43,6 +89,7 @@ function addVenue(venue,itinToAddTo) {
 						itinObject.set("venues", currentVenues);
 						itinObject.save();	
 					}
+					displayItin(window.currentItin);
 				}
 			});
 		}
@@ -57,8 +104,27 @@ function generateItinUL(results) {
 	$("#mySquaredays #auto").html(finalHTML);
 	$("#mySquaredays #auto li").click(function() {
 		window.currentItin = $(this).attr("id");
+		$("#home").removeClass("active");
+		$("#about").removeClass("active");
+		$("#mySquaredays").addClass("active");
 		displayItin(window.currentItin);
 	})
+}
+
+function venueEdit(classes) {
+	var currFunction = classes.split(" ")[2].split("-")[1];
+	/*if (currFunction == "minus") {
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				var currentVenues = itinObject.get("venues");
+				itinObject.set("venues", currentVenues);
+				itinObject.save();
+				displayItin(window.currentItin);
+			};
+  		});
+	} else if (currFunction == "question") {
+	
+	}*/
 }
 
 function displayVenues(theList) {
@@ -89,7 +155,7 @@ function displayVenues(theList) {
 			currentVenue.timeEnd = $("#timepickerEnd").val();
 			currentVenue.description = $("#userDescription").val();
 			addVenue(currentVenue,window.currentItin);
-			displayItin(window.currentItin);
+			$('#addNew').modal('hide');
 		})
 	});	
 }

@@ -4,7 +4,7 @@ function displayItin(itinToDisplay) {
 		success: function(itinObject) {
 			$("#introHome").hide();
 			$("#introAbout").hide();
-			var finalHTML = "<h2>My "+itinObject.get("name")+" Itinerary</h2>";
+			var finalHTML = '<div class="row"><div class="col-md-6"><h2>My '+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete This Itinerary</button><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button></div></div></div>';
 			var venues = itinObject.get("venues");
 			var markerObject = new Array();
 			if (venues != undefined) {

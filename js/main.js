@@ -110,7 +110,12 @@ function generateItinUL(results) {
 }
 
 function venueEdit(classes) {
-	console.log(classes);
+	var currFunction = classes.split(" ")[2].split("-")[1];
+	if (currFunction == "minus") {
+	
+	} else if (currFunction == "question") {
+	
+	}
 }
 
 function displayVenues(theList) {

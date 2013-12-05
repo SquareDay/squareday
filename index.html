@@ -23,7 +23,6 @@
 	<script src="http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js"></script>
 	
 	<!--custom javascript-->
-	<script src="js/itinerary.js"></script>
 	<script src="js/main.js"></script>
 	
 	<!--custom stylesheets-->
@@ -78,6 +77,16 @@
 	</div>	
 	<div id="introAbout">
 		<h1>SquareDay</h1>
+		<p>Squareday is a FourSquare based schedule generator, allowing users to create itineraries with venues and times. This allows the user to have a basic schedule view as well as a calendar representation of all the places the user wants to visit according to their itinerary.</p> 
+		<p>Squareday offers the functionality of a location based schedule creator that helps a user visualize their schedule coordinates in addition to just displaying when different events occur. This visualization helps organize the day by time and location. </p>
+		<p><b>The Squareday team is made up of Columbia University students studying CS4170 User Interface Design:</b></p>
+		<ul>
+			<li>Sophie Fader
+			<li>Hila Gutfreund</li>
+			<li>Nikanth Patel</li>
+			<li>William Falk-Wallace</li>
+		</ul>
+		<p>Please email us at squareday@googlegroups.com</p>
 	</div>
 	
 	<div id="venuesMap"></div>
@@ -130,6 +139,33 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Edit Venue</h4>
+					</div>
+					
+					<div class="input-append bootstrap-timepicker">
+						<span>Start Time </span>
+						<input id="timepickerStart" type="text" class="input-small">
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div>
+					<div class="input-append bootstrap-timepicker">
+						<span>End Time </span>
+						<input id="timepickerEnd" type="text" class="input-small">
+						<span class="add-on"><i class="icon-time"></i></span>
+					</div><div class="input-group"><br />
+					
+					<input type="text" class="input-large" placeholder="Description" id="userDescription"></div>
+					
+					<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Edit</button>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
 	</div> <!--/col-md-8 -->
 
 </body>

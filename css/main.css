@@ -167,6 +167,7 @@ body.modal-open {
 
 .itin .col-md-2 img {
 	width:100%;
+	margin-bottom:10px;
 }
 
 #addNewItinbutton {

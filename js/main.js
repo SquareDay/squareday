@@ -53,24 +53,6 @@ window.onload = function() {
     		}
 		});
 	});
-	
-	// This is the button that deletes the itinerary entirely from the app.
-	$("#deleteItinButton").click(function() {
-		pqresult.get(window.currentItin, {
-			success: function(itinObject) {
-				itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
-				changeMenu('home');
-				pqresult = new Parse.Query(Itineraries);
-				pqresult.find({
-    				success:function(results) {
-    					window.allItineraries = results;
-    					generateItinUL(results);
-    					$('#addNewItin').modal('hide');
-    				}
-				});
-	   		}
-		});
-	});
 }
 
 // This function searches through all the itineraries in Parse and finds the Parse ID for the one with the inputted name
@@ -227,6 +209,24 @@ function displayItin(itinToDisplay) {
 			$("#deleteItinButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
 			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")]); });
+			
+			// This is the button that deletes the itinerary entirely from the app.
+			$("#deleteItinButton").click(function() {
+				pqresult.get(window.currentItin, {
+				success: function(itinObject) {
+					itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
+					changeMenu('home');
+					pqresult = new Parse.Query(Itineraries);
+					pqresult.find({
+    					success:function(results) {
+    						window.allItineraries = results;
+    						generateItinUL(results);
+    						$('#addNewItin').modal('hide');
+    					}
+					});
+	   			}
+			});
+		});
 		}
 	});
 }

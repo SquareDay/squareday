@@ -21,7 +21,7 @@ body.modal-open {
 }
 
 .modal-dialog .input-group {
-	width:90%;
+	width:100%;
 	margin:10px auto;
 }
 
@@ -57,12 +57,12 @@ body.modal-open {
 	-webkit-box-shadow:none;
 }
 
-#addNewButton, #deleteItinButton {
+#addNewButton, #deleteItinButton, #renameItinButton {
 	float: right;
 	padding: 5px 15px;
 	font-size: 12px;
 	margin-top: 35px;
-	opacity:0;
+	opacity:1;
 	margin-right: 10px;
 	margin-bottom: 5px;
 }
@@ -100,7 +100,7 @@ body.modal-open {
 	font-weight:bold;
 }
 
-#venueMeta {
+#venueMeta, #editVenueContent {
 	width: 90%;
 	margin: auto;
 	border-top: 1px gray solid;
@@ -118,18 +118,28 @@ body.modal-open {
 	display:inline block;
 }
 
-#venueMeta #timepickerStart, #venueMeta #timepickerEnd {
+#venueMeta #timepickerStart, #venueMeta #timepickerEnd, #editVenue #timepickerStart, #editVenue #timepickerEnd {
 	display:inline-block;
 }
 
-#venueMeta .input-group {
+#venueMeta .input-group, #editVenue .input-group {
 	margin:0;
 	margin-bottom:20px;
 	width:100%;
 }
 
-#venueMeta .input-group input {
+#venueMeta .input-group input, #editVenue .input-group input {
 	width:100%;
+}
+
+#editVenue .bootstrap-timepicker {
+	margin:15px;
+}
+
+#editVenue .input-group {
+	width:90%;
+	margin:auto;
+	margin-bottom:15px;
 }
 
 #venueList li .location {
@@ -149,6 +159,14 @@ body.modal-open {
 .itin .glyphicon {
 	margin-left:5px;
 	cursor:pointer;
+}
+
+.itin .col-md-10 {
+	padding:0;
+}
+
+.itin .col-md-2 img {
+	width:100%;
 }
 
 #addNewItinbutton {
@@ -210,6 +228,32 @@ body.modal-open {
 .intro-new-header {
 	margin-top: 20px;
 	margin-bottom: 0;
+}
+
+@media (max-width: 1000px) {
+	.itin .col-md-6 {
+		width:50%;
+		display: inline-block;
+	}
+	.itin .col-md-10 {
+		width:80%;
+		display: inline-block;
+	}
+	.itin .col-md-2 {
+    	width:20%;
+    	display: inline-block;
+    	top: -15px;
+		position: relative;
+	}	
+}
+
+@media (max-width: 600px) {
+	.itin .col-md-10 {
+		width:100%;
+	}
+	.itin .col-md-2 {
+    	display:none;
+	}	
 }
 
 

@@ -100,7 +100,7 @@ body.modal-open {
 	font-weight:bold;
 }
 
-#venueMeta {
+#venueMeta, #editVenueContent {
 	width: 90%;
 	margin: auto;
 	border-top: 1px gray solid;
@@ -118,18 +118,28 @@ body.modal-open {
 	display:inline block;
 }
 
-#venueMeta #timepickerStart, #venueMeta #timepickerEnd {
+#venueMeta #timepickerStart, #venueMeta #timepickerEnd, #editVenue #timepickerStart, #editVenue #timepickerEnd {
 	display:inline-block;
 }
 
-#venueMeta .input-group {
+#venueMeta .input-group, #editVenue .input-group {
 	margin:0;
 	margin-bottom:20px;
 	width:100%;
 }
 
-#venueMeta .input-group input {
+#venueMeta .input-group input, #editVenue .input-group input {
 	width:100%;
+}
+
+#editVenue .bootstrap-timepicker {
+	margin:15px;
+}
+
+#editVenue .input-group {
+	width:90%;
+	margin:auto;
+	margin-bottom:15px;
 }
 
 #venueList li .location {

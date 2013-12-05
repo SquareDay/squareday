@@ -53,6 +53,9 @@ window.onload = function() {
     		}
 		});
 	});
+	$("#editVenue button").click(function() {
+		editVenueMeta(window.theId);
+	})
 }
 
 // This function searches through all the itineraries in Parse and finds the Parse ID for the one with the inputted name
@@ -94,19 +97,14 @@ function addVenue(venue,itinToAddTo) {
 	pqresult.get(itinToAddTo, {
 		success: function(itinObject) {
 			var currentVenues = itinObject.get("venues");
-	    	itinObject.save(null, {
-				success: function(itinObject) {
-					if (currentVenues == undefined) {
-						itinObject.set("venues", [venue]);
-						itinObject.save();
-					} else {
-						currentVenues.push(venue);
-						itinObject.set("venues", currentVenues);
-						itinObject.save();	
-					}
-					displayItin(window.currentItin);
-				}
-			});
+			if (currentVenues == undefined) {
+				itinObject.set("venues", [venue]);
+				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+			} else {
+				currentVenues.push(venue);
+				itinObject.set("venues", currentVenues);
+				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+			}
 		}
   	});
 }
@@ -122,22 +120,53 @@ function generateItinUL(results) {
 		window.currentItin = $(this).attr("id");
 		$("#home").removeClass("active");
 		$("#about").removeClass("active");
-		$("#mySquaredays").addClass("active");
+		$("#mySquaredays").addClass("ective");
 		displayItin(window.currentItin);
 	})
 }
 
 // This function sets the times for when a venue needs to be edited so that they are always the current time for the venue.
-function venueEdit(classes,start,end) {
+function venueEdit(classes,start,end,description,theId) {
 	var currFunction = classes.split(" ")[2].split("-")[1];
-	$('#timepickerStart').timepicker({
+	$('#editVenue #timepickerStart').timepicker({
 		template: 'modal',
 		defaultTime: start
 	});
-	$('#timepickerEnd').timepicker({
+	$('#editVenue #timepickerEnd').timepicker({
 		template: 'modal',
 		defaultTime: end
 	});
+	window.theId = theId;
+	$("#editVenue #userDescription").val(description);
+	if (currFunction == "remove") {
+		window.currentVenues.splice(theId,1);
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				itinObject.set("venues", window.currentVenues);
+				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+			}
+		});
+	}
+}
+
+function editVenueMeta(theId) {
+	var currentVenue = window.currentVenues[theId];
+	var startTime = convertTimeStringToHours($("#editVenue #timepickerStart").val());
+	var endTime = convertTimeStringToHours($("#editVenue #timepickerEnd").val());
+	currentVenue.timeStart = $("#editVenue #timepickerStart").val();
+	currentVenue.timeEnd = $("#editVenue #timepickerEnd").val();
+	currentVenue.description = $("#editVenue #userDescription").val();
+	
+	window.currentVenues.splice(theId,1,currentVenue)
+	console.log(window.currentVenues);
+	pqresult.get(window.currentItin, {
+		success: function(itinObject) {
+			itinObject.set("venues", window.currentVenues);
+			itinObject.save({ success: function() { displayItin(window.currentItin) } });
+		}
+	});
+	
+	$('#editVenue').modal('hide');
 }
 
 // This function generates the HTML for the venues that result while the user is searching. It then updates theHTML to the modal on the fly.
@@ -184,19 +213,21 @@ function displayItin(itinToDisplay) {
 			);
 			$("#introHome").hide();
 			$("#introAbout").hide();
-			var finalHTML = '<div class="row"><div class="col-md-6"><h2>My '+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete This Itinerary</button><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button></div></div></div>';
-			var venues = itinObject.get("venues");
+			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete This Itinerary</button><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button></div></div></div>';
+			window.currentVenues = itinObject.get("venues");
 			var markerObject = new Array();
 			var startTimes = new Array();
 			var endTimes = new Array();
-			if (venues != undefined) {
-				venues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
-				for (var i=0; i<venues.length; i++) {
-					fetchImage(venues[i].id); 
-					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+venues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+venues[i].timeStart+' - '+venues[i].timeEnd+'</span><span class="event-loc pull-right">'+venues[i].location.address+'</span><br><p>'+venues[i].description+'</p></div></div>';
-					startTimes.push(venues[i].timeStart);
-					endTimes.push(venues[i].timeEnd);
-					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [venues[i].location.lng, venues[i].location.lat]}, properties: { title: venues[i].name } };
+			var descriptions = new Array();
+			if (window.currentVenues != undefined) {
+				window.currentVenues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
+				for (var i=0; i<window.currentVenues.length; i++) {
+					fetchImage(window.currentVenues[i].id); 
+					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div>';
+					startTimes.push(window.currentVenues[i].timeStart);
+					endTimes.push(window.currentVenues[i].timeEnd);
+					descriptions.push(window.currentVenues[i].description);
+					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [window.currentVenues[i].location.lng, window.currentVenues[i].location.lat]}, properties: { title: window.currentVenues[i].name } };
 					markerObject.push(currentMarkerObject);
 				}
 				$(".itin").html(finalHTML);
@@ -208,7 +239,7 @@ function displayItin(itinToDisplay) {
 			$("#addNewButton").animate({opacity:1},500);
 			$("#deleteItinButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
-			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")]); });
+			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")],descriptions[$(this).attr("id")],$(this).attr("id")); });
 			
 			// This is the button that deletes the itinerary entirely from the app.
 			$("#deleteItinButton").click(function() {

@@ -53,9 +53,31 @@ window.onload = function() {
     		}
 		});
 	});
+	
+	// This function runs when the edit button is clicked on the "edit venue" modal dialog
 	$("#editVenue button").click(function() {
 		editVenueMeta(window.theId);
 	})
+	
+	// This function is run when the rename button is clicked on the "rename itin" modal dialog
+	$("#renameItinButton").click(function() {
+		pqresult.get(window.currentItin, {
+			success: function(itinObject) {
+				itinObject.set("name", $("#itinRename").val());
+				itinObject.save({ success: function() { 
+					pqresult = new Parse.Query(Itineraries);
+					pqresult.find({
+    					success:function(results) {
+    						window.allItineraries = results;
+    						generateItinUL(results);
+    						$('#rename').modal('hide');
+    						displayItin(window.currentItin);
+    					}
+					}); 
+				} });
+	   		}
+		});
+	});
 }
 
 // This function searches through all the itineraries in Parse and finds the Parse ID for the one with the inputted name
@@ -78,7 +100,6 @@ function changeMenu(dest) {
 	$("#mySquaredays").removeClass("active");
 	$("#"+dest).addClass("active");
 	$(".itin").html("");
-	$("#addNewButton, #deleteItinButton").animate({opacity:0},500);
 }
 
 // This function generates a URL to use to query the FourSquare API and does so using the client ID. Again, in a real app, this would be done server-side.
@@ -177,7 +198,7 @@ function displayVenues(theList) {
 		if (theList.response.venues[i].location.address != undefined && theList.response.venues[i].location.city != undefined && theList.response.venues[i].location.state != undefined) {
 			var address = theList.response.venues[i].location.address+". "+theList.response.venues[i].location.city+", "+theList.response.venues[i].location.state;
 		} else {
-			var address = "";
+			var address = "http://upload.wikimedia.org/wikipedia/commons/0/03/WhitePixel45w.jpg";
 		}
 		var name = theList.response.venues[i].name;
 		finalHTML = finalHTML+'<a href="#"><li class="list-group-item" id="'+i+'"><span class="title">'+name+' </span><span class="location"> '+address+'</span></li></a>';
@@ -197,9 +218,22 @@ function displayVenues(theList) {
 			currentVenue.timeStart = $("#timepickerStart").val();
 			currentVenue.timeEnd = $("#timepickerEnd").val();
 			currentVenue.description = $("#userDescription").val();
-			addVenue(currentVenue,window.currentItin);
-			displayItin(window.currentItin);
-			$('#addNew').modal('hide');
+			
+			// We have to make another FourSquare API call to get the venue's image
+			imageFetchURL = 'https://api.foursquare.com/v2/venues/'+currentVenue.id+'/photos?client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125&limit=1'
+			$.ajax({
+				url: imageFetchURL
+			}).done( function(thePhoto) {
+				try {
+					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
+				} catch(err) {
+					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
+				}
+				addVenue(currentVenue,window.currentItin);
+				displayItin(window.currentItin);
+				$('#addNew').modal('hide');
+			});
+			
 		})
 	});	
 }
@@ -213,7 +247,7 @@ function displayItin(itinToDisplay) {
 			);
 			$("#introHome").hide();
 			$("#introAbout").hide();
-			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete This Itinerary</button><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button></div></div></div>';
+			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
 			var markerObject = new Array();
 			var startTimes = new Array();
@@ -223,7 +257,7 @@ function displayItin(itinToDisplay) {
 				window.currentVenues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<window.currentVenues.length; i++) {
 					fetchImage(window.currentVenues[i].id); 
-					finalHTML = finalHTML+'<div class="panel panel-primary"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div>';
+					finalHTML = finalHTML+'<div class="panel panel-primary col-md-10"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+". "+window.currentVenues[i].location.city+", "+window.currentVenues[i].location.state+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div><div class="col-md-2"><img src="'+window.currentVenues[i].image+'" /></div>';
 					startTimes.push(window.currentVenues[i].timeStart);
 					endTimes.push(window.currentVenues[i].timeEnd);
 					descriptions.push(window.currentVenues[i].description);
@@ -232,12 +266,10 @@ function displayItin(itinToDisplay) {
 				}
 				$(".itin").html(finalHTML);
 				var markerLayer = L.mapbox.markerLayer(markerObject).addTo(map); // Adds markers to the map.
-				window.map.setView([markerObject[0].geometry.coordinates[1],markerObject[0].geometry.coordinates[0]], 11) // Centers map on the first marker.
+				window.map.setView([markerObject[0].geometry.coordinates[1]-.2,markerObject[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
 			} else {
 				$(".itin").html(finalHTML);
 			}
-			$("#addNewButton").animate({opacity:1},500);
-			$("#deleteItinButton").animate({opacity:1},500);
 			$("#venuesMap").animate({height:"300px"},500);
 			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")],descriptions[$(this).attr("id")],$(this).attr("id")); });
 			
@@ -257,6 +289,7 @@ function displayItin(itinToDisplay) {
 					});
 	   			}
 			});
+			
 		});
 		}
 	});
@@ -275,12 +308,5 @@ function convertTimeStringToHours(timeString) {
 }
 
 function fetchImage(id) {
-	fetchURL = 'https://api.foursquare.com/v2/venues/'+id+'/photos?client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125&limit=1'
-	$.ajax({
-		url: fetchURL,
-		context: document.body
-	}).done( function(thePhoto) {
-		console.dir(thePhoto);
-		//prefix + size(36x36) + suffix
-	});
+	
 }

@@ -86,7 +86,8 @@
 			<li>Nikanth Patel</li>
 			<li>William Falk-Wallace</li>
 		</ul>
-		<p>Please email us at squareday@googlegroups.com</p>
+		<p>Please email us at <a href="mailto:squareday@googlegroups.com?subject=Hi%20there">
+squareday@googlegroups.com</a></p>
 	</div>
 	
 	<div id="venuesMap"></div>
@@ -129,11 +130,9 @@
 						<h4 class="modal-title">New Itinerary</h4>
 					</div>
 					<div class="modal-body">
-						<p>
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
-							</div>
-						</p>
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+						</div>
 					</div>
 					<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
 				</div><!-- /.modal-content -->
@@ -157,11 +156,27 @@
 						<span>End Time </span>
 						<input id="timepickerEnd" type="text" class="input-small">
 						<span class="add-on"><i class="icon-time"></i></span>
-					</div><div class="input-group"><br />
-					
-					<input type="text" class="input-large" placeholder="Description" id="userDescription"></div>
-					
+					</div>
+					<div class="input-group"><br />
+						<input type="text" class="input-large" placeholder="Description" id="userDescription"></div>
 					<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Edit</button>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="rename" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Rename</h4>
+					</div>
+					<div class="modal-body">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="What would you like the name to be?" name="itinRename" id="itinRename">
+						</div>
+					</div>
+					<button type="button" id="renameItinButton" class="btn btn-primary btn-lg">Rename</button>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->

@@ -207,6 +207,9 @@ function editVenueMeta(theId) {
 function displayVenues(theList) {
 	$("#venueList").html("<img width='20' src='./css/img/ajax_loader.gif' />");
 	var finalHTML = "";
+	if(theList.response.venues.length < 1){
+		finalHTML = finalHTML+'No matching venues were found on FourSquare... Try searching again.'
+	}
 	for (var i=0; i<theList.response.venues.length; i++) {
 		if (theList.response.venues[i].location.address != undefined && theList.response.venues[i].location.city != undefined && theList.response.venues[i].location.state != undefined) {
 			var address = theList.response.venues[i].location.address+". "+theList.response.venues[i].location.city+", "+theList.response.venues[i].location.state;

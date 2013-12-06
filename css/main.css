@@ -244,6 +244,23 @@ body.modal-open {
 
 .intro-dd {
 	width:100%;
+	height:3em;
+	background:rgba(0,0,0,.75);
+	color:#999;
+	text-shadow:none;
+	border-color: transparent;
+	border-radius: 4px;
+}
+
+.intro-dd .caret {
+	border-top-color: #999;
+}
+
+.intro-dd:hover {
+	width:100%;
+	background:rgba(0,0,0,.75);
+	color:#fff;
+	text-shadow:none;
 }
 
 .intro-dd-list {

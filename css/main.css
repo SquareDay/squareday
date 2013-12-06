@@ -34,6 +34,17 @@ body.modal-open {
 	margin:0;
 }
 
+.intro-dd li {
+	font-weight:bold;
+	padding:10px;
+	color:gray;
+}
+
+.intro-dd li:hover {
+	color:black;
+	cursor:pointer;
+}
+
 #mySquareDays li {
 	font-weight:bold;
 	padding:10px;
@@ -208,7 +219,12 @@ body.modal-open {
 }
 
 .event-img {
-	width:50px;
+	border-radius: 4px;
+}
+
+#itinName {
+	width:95%;
+	border-radius: 4px;
 }
 
 .event-btn:hover {
@@ -218,6 +234,19 @@ body.modal-open {
 .intro-new-btn {
 	font-size: 8em;
 	color:#424546;
+}
+
+.intro-dd-wrapper {
+	width:50%;
+	padding-top: 25px;
+}
+
+.intro-dd {
+	width:100%;
+}
+
+.intro-dd-list {
+	width:100%;
 }
 
 .intro-new-btn:hover {

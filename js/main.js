@@ -41,16 +41,19 @@ window.onload = function() {
 		var itinerary = new Itineraries();
 		window.itineraryName = $("#addNewItin #itinName").val();
 		itinerary.set("name", window.itineraryName);
-		itinerary.save(null);
-		pqresult = new Parse.Query(Itineraries);
-		pqresult.find({
-    		success:function(results) {
-    			window.allItineraries = results;
-    			generateItinUL(results);
-    			$('#addNewItin').modal('hide');
-    			var justAddedItin = findItinId(window.itineraryName,results);
-    			displayItin(justAddedItin);
-    		}
+		itinerary.save({
+			success: function() {
+				pqresult = new Parse.Query(Itineraries);
+				pqresult.find({
+    				success:function(results) {
+    					window.allItineraries = results;
+    					generateItinUL(results);
+    					$('#addNewItin').modal('hide');
+    					var justAddedItin = findItinId(window.itineraryName,results);
+    					displayItin(justAddedItin);
+    				}
+				});
+			}
 		});
 	});
 	

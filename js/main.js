@@ -6,16 +6,18 @@ var Itineraries = Parse.Object.extend("Itineraries");
 
 // Next we're going to query the database to see how many rows there are. Each row represents a single itinerary. This query will be reused several times in the app.
 var pqresult = new Parse.Query(Itineraries);
-	pqresult.find({
-    	success:function(results) {
-    		window.allItineraries = results;
-    		generateItinUL(results);
-    		window.currentItin = undefined;
-    	}
-	});
+pqresult.find({
+	success:function(results) {
+		window.allItineraries = results;
+		generateItinUL(results);
+		window.currentItin = undefined;
+	}
+});
 
 // When the DOM is finished loading, we have a bunch of functions that need to run.
 window.onload = function() {
+	
+	
 	
 	// First, this is a call to the Mapbox API to load the map in the background.
 	window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
@@ -46,13 +48,13 @@ window.onload = function() {
 			success: function() {
 				pqresult = new Parse.Query(Itineraries);
 				pqresult.find({
-    				success:function(results) {
-    					window.allItineraries = results;
-    					generateItinUL(results);
-    					$('#addNewItin').modal('hide');
-    					var justAddedItin = findItinId(window.itineraryName,results);
-    					displayItin(justAddedItin);
-    				}
+					success:function(results) {
+						window.allItineraries = results;
+						generateItinUL(results);
+						$('#addNewItin').modal('hide');
+						var justAddedItin = findItinId(window.itineraryName,results);
+						displayItin(justAddedItin);
+					}
 				});
 			}
 		});
@@ -71,15 +73,15 @@ window.onload = function() {
 				itinObject.save({ success: function() { 
 					pqresult = new Parse.Query(Itineraries);
 					pqresult.find({
-    					success:function(results) {
-    						window.allItineraries = results;
-    						generateItinUL(results);
-    						$('#rename').modal('hide');
-    						displayItin(window.currentItin);
-    					}
+						success:function(results) {
+							window.allItineraries = results;
+							generateItinUL(results);
+							$('#rename').modal('hide');
+							displayItin(window.currentItin);
+						}
 					}); 
 				} });
-	   		}
+			}
 		});
 	});
 }
@@ -117,8 +119,8 @@ function changeMenu(dest) {
 function fetchVenues(query,location) {
 	fetchURL = 'https://api.foursquare.com/v2/venues/search?query='+query+'&near='+location+'&limit=5&client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125'
 	$.ajax({
-		  url: fetchURL,
-		  context: document.body
+		url: fetchURL,
+		context: document.body
 	}).done( function(theList) {
 		displayVenues(theList);
 	});
@@ -138,7 +140,7 @@ function addVenue(venue,itinToAddTo) {
 				itinObject.save({ success: function() { displayItin(window.currentItin) } });
 			}
 		}
-  	});
+	});
 }
 
 // This function uses the Parse query and translates that array into an unordered list for the navbar. It then edits the navbar ul's HTML accordingly.
@@ -161,11 +163,11 @@ function generateItinUL(results) {
 function venueEdit(classes,start,end,description,theId) {
 	var currFunction = classes.split(" ")[2].split("-")[1];
 	$('#editVenue #timepickerStart').timepicker({
-		template: 'modal',
+		// template: 'modal',
 		defaultTime: start
 	});
 	$('#editVenue #timepickerEnd').timepicker({
-		template: 'modal',
+		// template: 'modal',
 		defaultTime: end
 	});
 	window.theId = theId;
@@ -218,7 +220,7 @@ function displayVenues(theList) {
 	$("#venueList li" ).click(function( event ) {
 		$("#venueMeta").show();
 		window.currentlySelectedVenueID = $(this).attr("id");
-		var moreHTML = '<div class="input-append bootstrap-timepicker"><span>Start Time </span><input id="timepickerStart" type="text" class="input-small"><span class="add-on"><i class="icon-time"></i></span></div><div class="input-append bootstrap-timepicker"><span>End Time </span><input id="timepickerEnd" type="text" class="input-small"><span class="add-on"><i class="icon-time"></i></span></div><div class="input-group"><br /><input type="text" class="input-large" placeholder="Description" id="userDescription"></div><button type="button" class="btn btn-primary" id="sendVenue">Save</button>';
+		var moreHTML = '<div class="input-group bootstrap-timepicker"><input type="text" class="form-control" id="timepickerStart"><span class="input-group-addon">to</span><input type="text" class="form-control" id="timepickerEnd"></div><div class="input-group"><br /><textarea class="input-large" placeholder="Description" rows="3" id="userDescription"></textarea></div><div class="input-group"><button type="button" class="btn btn-primary pull-right" id="sendVenue">Save</button></div>';
 		$("#venueMeta").html(moreHTML);
 		$('#timepickerStart').timepicker();
 		$('#timepickerEnd').timepicker();
@@ -246,7 +248,7 @@ function displayVenues(theList) {
 			});
 			
 		})
-	});	
+});	
 }
 
 // This function launches when one of the SquareDay Itineraries is clicked. It generates HTML for that itinerary and plots its venues as markers on the map.
@@ -256,7 +258,7 @@ function displayItin(itinToDisplay) {
 		success: function(itinObject) {
 			window.map.markerLayer.eachLayer(  
    				function(l) { map.markerLayer.removeLayer(l); } // This deletes all markers currently on the map.
-			);
+   				);
 			$("#introHome").hide();
 			$("#introAbout").hide();
 			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
@@ -288,21 +290,21 @@ function displayItin(itinToDisplay) {
 			// This is the button that deletes the itinerary entirely from the app.
 			$("#deleteItinButton").click(function() {
 				pqresult.get(window.currentItin, {
-				success: function(itinObject) {
+					success: function(itinObject) {
 					itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
 					changeMenu('home');
 					pqresult = new Parse.Query(Itineraries);
 					pqresult.find({
-    					success:function(results) {
-    						window.allItineraries = results;
-    						generateItinUL(results);
-    						$('#addNewItin').modal('hide');
-    					}
+						success:function(results) {
+							window.allItineraries = results;
+							generateItinUL(results);
+							$('#addNewItin').modal('hide');
+						}
 					});
-	   			}
+				}
 			});
-			
-		});
+				
+			});
 		}
 	});
 }

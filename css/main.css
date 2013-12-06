@@ -34,6 +34,17 @@ body.modal-open {
 	margin:0;
 }
 
+.intro-dd li {
+	font-weight:bold;
+	padding:10px;
+	color:gray;
+}
+
+.intro-dd li:hover {
+	color:black;
+	cursor:pointer;
+}
+
 #mySquareDays li {
 	font-weight:bold;
 	padding:10px;
@@ -167,6 +178,7 @@ body.modal-open {
 
 .itin .col-md-2 img {
 	width:100%;
+	margin-bottom:10px;
 }
 
 #addNewItinbutton {
@@ -208,7 +220,12 @@ body.modal-open {
 }
 
 .event-img {
-	width:50px;
+	border-radius: 4px;
+}
+
+#itinName {
+	width:95%;
+	border-radius: 4px;
 }
 
 .event-btn:hover {
@@ -218,6 +235,36 @@ body.modal-open {
 .intro-new-btn {
 	font-size: 8em;
 	color:#424546;
+}
+
+.intro-dd-wrapper {
+	width:50%;
+	padding-top: 25px;
+}
+
+.intro-dd {
+	width:100%;
+	height:3em;
+	background:rgba(0,0,0,.75);
+	color:#999;
+	text-shadow:none;
+	border-color: transparent;
+	border-radius: 4px;
+}
+
+.intro-dd .caret {
+	border-top-color: #999;
+}
+
+.intro-dd:hover {
+	width:100%;
+	background:rgba(0,0,0,.75);
+	color:#fff;
+	text-shadow:none;
+}
+
+.intro-dd-list {
+	width:100%;
 }
 
 .intro-new-btn:hover {
@@ -253,7 +300,20 @@ body.modal-open {
 	}
 	.itin .col-md-2 {
     	display:none;
-	}	
+	}
+	#introHome,#introAbout {
+		top:50px;
+		width:100%;
+		min-height:95%;
+		padding:20px;
+		padding-top:0;
+		padding-bottom:30px;
+		margin-left:0;
+		background:rgba(0,0,0,.9);
+	}
+	#venuesMap {
+		display:none;
+	}
 }
 
 

@@ -109,12 +109,73 @@
 			<div class ="modal-dialog">
 				<div class="modal-content">
 
+<<<<<<< HEAD
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title">New Venue</h4>
 					</div>
 					<div class="modal-body">
 						<p>
+=======
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">New Venue</h4>
+							</div>
+							<div class="modal-body">
+								<p>
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Where are you?" name="location" id="venueLocation">
+									</div>
+									
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="What are you looking for?" name="location" id="venueName">
+									</div>
+									
+									<div class="list-group" id="results-list">
+										<ul id="venueList"></ul>	
+										<div id="venueMeta"> 
+										</div>
+									</div>
+								</p>
+							</div>
+						</div> <!--/modal dialog-->
+					</div> <!--/modal content-->
+				</div> <!--/modal fade -->
+				
+				<div class="modal fade" id="addNewItin" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">New Itinerary</h4>
+							</div>
+							<div class="modal-body">
+								<div class="input-group text-center">
+									<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+								</div>
+								<div class="input-group text-center">
+									<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
+								</div>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				
+				<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Edit Venue</h4>
+							</div>
+							
+							<div class="input-group bootstrap-timepicker">
+								<input type="text" class="form-control" id="timepickerStart">
+								<span class="input-group-addon">to</span>
+								<input type="text" class="form-control" id="timepickerEnd">
+							</div>
+							
+>>>>>>> 9cf20cc03e75ffcb900481794b81489bb0af0006
 							<div class="input-group">
 								<input type="text" class="form-control" placeholder="Where are you?" name="location" id="venueLocation">
 							</div>

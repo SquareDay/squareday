@@ -39,6 +39,10 @@ window.onload = function() {
 		changeMenu('about');
 	});
 	
+	$("#help").click(function() {
+		changeMenu('help');
+	});
+	
 	// This is the function run when a new itinerary is to be added to SquareDay, i.e. when its name is typed in the box.
 	$("#addNewItinButton").click(function() {
 		var itinerary = new Itineraries();
@@ -99,10 +103,11 @@ function findItinId(name,results) {
 // This is the function called earlier when something in the navbar is clicked to change the content.
 function changeMenu(dest) {
 	$("#venuesMap").animate({height:"105%"},500);
-	$("#introHome, #introAbout").css("display","none");
+	$("#introHome, #introAbout, #introHelp").css("display","none");
 	$("#intro"+dest.charAt(0).toUpperCase()+dest.slice(1)).css("display","block");
 	$("#home").removeClass("active");
 	$("#about").removeClass("active");
+	$("#help").removeClass("active");
 	$("#mySquaredays").removeClass("active");
 	$("#"+dest).addClass("active");
 	$(".itin").html("");
@@ -207,6 +212,9 @@ function editVenueMeta(theId) {
 function displayVenues(theList) {
 	$("#venueList").html("<img width='20' src='./css/img/ajax_loader.gif' />");
 	var finalHTML = "";
+	if(theList.response.venues.length < 1){
+		finalHTML = finalHTML+'No matching venues were found on FourSquare... Try searching again.'
+	}
 	for (var i=0; i<theList.response.venues.length; i++) {
 		if (theList.response.venues[i].location.address != undefined && theList.response.venues[i].location.city != undefined && theList.response.venues[i].location.state != undefined) {
 			var address = theList.response.venues[i].location.address+". "+theList.response.venues[i].location.city+", "+theList.response.venues[i].location.state;
@@ -259,8 +267,7 @@ function displayItin(itinToDisplay) {
 			window.map.markerLayer.eachLayer(  
    				function(l) { map.markerLayer.removeLayer(l); } // This deletes all markers currently on the map.
    				);
-			$("#introHome").hide();
-			$("#introAbout").hide();
+			$("#introHome, #introAbout, #introHelp").hide();
 			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
 			var markerObject = new Array();

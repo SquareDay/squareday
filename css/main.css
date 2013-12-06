@@ -263,6 +263,15 @@ body.modal-open {
 	text-shadow:none;
 }
 
+#menu-bar-items {
+	width:14.5%;
+}
+
+#mySquaredays {
+	width:100%;
+	text-align: center;
+}
+
 .intro-dd-list {
 	width:100%;
 }

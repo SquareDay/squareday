@@ -39,6 +39,10 @@ window.onload = function() {
 		changeMenu('about');
 	});
 	
+	$("#help").click(function() {
+		changeMenu('help');
+	});
+	
 	// This is the function run when a new itinerary is to be added to SquareDay, i.e. when its name is typed in the box.
 	$("#addNewItinButton").click(function() {
 		var itinerary = new Itineraries();
@@ -99,10 +103,11 @@ function findItinId(name,results) {
 // This is the function called earlier when something in the navbar is clicked to change the content.
 function changeMenu(dest) {
 	$("#venuesMap").animate({height:"105%"},500);
-	$("#introHome, #introAbout").css("display","none");
+	$("#introHome, #introAbout, #introHelp").css("display","none");
 	$("#intro"+dest.charAt(0).toUpperCase()+dest.slice(1)).css("display","block");
 	$("#home").removeClass("active");
 	$("#about").removeClass("active");
+	$("#help").removeClass("active");
 	$("#mySquaredays").removeClass("active");
 	$("#"+dest).addClass("active");
 	$(".itin").html("");

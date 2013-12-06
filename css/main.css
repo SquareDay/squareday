@@ -78,7 +78,7 @@ body.modal-open {
 	margin-bottom: 5px;
 }
 
-#introHome,#introAbout {
+#introHome,#introAbout, #introHelp {
 	position:absolute;
 	top:100px;
 	width:70%;
@@ -90,7 +90,7 @@ body.modal-open {
 	z-index:1000;
 }
 
-#introAbout {
+#introAbout, #introHelp {
 	display:none;
 }
 

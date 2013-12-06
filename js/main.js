@@ -32,6 +32,7 @@ window.onload = function() {
 	$("#home").click(function() {
 		changeMenu('home');
 	});
+	
 	$("#about").click(function() {
 		changeMenu('about');
 	});
@@ -103,7 +104,14 @@ function changeMenu(dest) {
 	$("#mySquaredays").removeClass("active");
 	$("#"+dest).addClass("active");
 	$(".itin").html("");
+	if(dest !== 'home') {
+		$("#menu-bar-items").removeClass("hide");
+	}
+	if(dest == 'home') {
+		$("#menu-bar-items").addClass("hide");
+	}
 }
+
 
 // This function generates a URL to use to query the FourSquare API and does so using the client ID. Again, in a real app, this would be done server-side.
 function fetchVenues(query,location) {
@@ -243,6 +251,7 @@ function displayVenues(theList) {
 
 // This function launches when one of the SquareDay Itineraries is clicked. It generates HTML for that itinerary and plots its venues as markers on the map.
 function displayItin(itinToDisplay) {
+	$("#menu-bar-items").removeClass("hide");
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
 			window.map.markerLayer.eachLayer(  

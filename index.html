@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 	<link type="text/css" href="css/bootstrap-timepicker.min.css" />
+	<link type="text/css" href="css/datepicker.css" />
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.css" />
 	
@@ -20,6 +21,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script src="js/vendor/parse-1.2.13.min.js"></script>
 	<script src="js/vendor/bootstrap-timepicker.min.js"></script>
+	<script src="js/vendor/bootstrap-datepicker.js"></script>
 	<script src="js/vendor/bootstrap.min.js"></script>
 	<script src="http://api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js"></script>
 	
@@ -152,41 +154,40 @@
 								<h4 class="modal-title">Edit Venue</h4>
 							</div>
 							
-							<div class="input-append bootstrap-timepicker">
-								<span>Start Time </span>
-								<input id="timepickerStart" type="text" class="input-small">
-								<span class="add-on"><i class="icon-time"></i></span>
+							<div class="input-group bootstrap-timepicker">
+								<input type="text" class="form-control" id="timepickerStart">
+								<span class="input-group-addon">to</span>
+								<input type="text" class="form-control" id="timepickerEnd">
 							</div>
-							<div class="input-append bootstrap-timepicker">
-								<span>End Time </span>
-								<input id="timepickerEnd" type="text" class="input-small">
-								<span class="add-on"><i class="icon-time"></i></span>
+							
+							<div class="input-group">
+								<textarea class="input-large" rows="3" placeholder="Description" id="userDescription"></textarea>
 							</div>
-							<div class="input-group"><br />
-								<input type="text" class="input-large" placeholder="Description" id="userDescription"></div>
-								<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Edit</button>
-							</div><!-- /.modal-content -->
-						</div><!-- /.modal-dialog -->
-					</div><!-- /.modal -->
-					
-					<div class="modal fade" id="rename" tabindex="-1" role="dialog" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">Rename</h4>
+							<div class="input-group">
+								<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Submit</button>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				
+				<div class="modal fade" id="rename" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Rename</h4>
+							</div>
+							<div class="modal-body">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="What would you like the name to be?" name="itinRename" id="itinRename">
 								</div>
-								<div class="modal-body">
-									<div class="input-group">
-										<input type="text" class="form-control" placeholder="What would you like the name to be?" name="itinRename" id="itinRename">
-									</div>
-								</div>
-								<button type="button" id="renameItinButton" class="btn btn-primary btn-lg">Rename</button>
-							</div><!-- /.modal-content -->
-						</div><!-- /.modal-dialog -->
-					</div><!-- /.modal -->
-					
-				</div> <!--/col-md-8 -->
+							</div>
+							<button type="button" id="renameItinButton" class="btn btn-primary btn-lg">Rename</button>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				
+			</div> <!--/col-md-8 -->
 
-			</body>
-			</html>
+		</body>
+		</html>

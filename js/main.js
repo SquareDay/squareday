@@ -136,12 +136,12 @@ function generateItinUL(results) {
 	for (var i=0; i<results.length; i++) {
 		finalHTML = finalHTML + "<li id='"+results[i].id+"'>"+results[i]._serverData.name+"</li>"
 	}
-	$("#mySquaredays #auto").html(finalHTML);
-	$("#mySquaredays #auto li").click(function() {
+	$(".auto").html(finalHTML);
+	$(".auto li").click(function() {
 		window.currentItin = $(this).attr("id");
 		$("#home").removeClass("active");
 		$("#about").removeClass("active");
-		$("#mySquaredays").addClass("ective");
+		$("#mySquaredays").addClass("active");
 		displayItin(window.currentItin);
 	})
 }
@@ -257,7 +257,7 @@ function displayItin(itinToDisplay) {
 				window.currentVenues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<window.currentVenues.length; i++) {
 					fetchImage(window.currentVenues[i].id); 
-					finalHTML = finalHTML+'<div class="panel panel-primary col-md-10"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+". "+window.currentVenues[i].location.city+", "+window.currentVenues[i].location.state+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div><div class="col-md-2"><img src="'+window.currentVenues[i].image+'" /></div>';
+					finalHTML = finalHTML+'<div class="panel panel-primary col-md-10"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+". "+window.currentVenues[i].location.city+", "+window.currentVenues[i].location.state+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div><div class="col-md-2"><img class="event-img" src="'+window.currentVenues[i].image+'" /></div>';
 					startTimes.push(window.currentVenues[i].timeStart);
 					endTimes.push(window.currentVenues[i].timeEnd);
 					descriptions.push(window.currentVenues[i].description);

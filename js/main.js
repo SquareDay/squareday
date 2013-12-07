@@ -188,6 +188,7 @@ function venueEdit(classes,start,end,description,theId) {
 	}
 }
 
+// This function is called when the user attempts to edit a venue's time and description.
 function editVenueMeta(theId) {
 	var currentVenue = window.currentVenues[theId];
 	var startTime = convertTimeStringToHours($("#editVenue #timepickerStart").val());

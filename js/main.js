@@ -44,7 +44,6 @@ window.onload = function() {
 	
 	// This is the function run when a new itinerary is to be added to SquareDay, i.e. when its name is typed in the box.
 	$("#addNewItinButton").click(function() {
-		
 		var itinerary = new Itineraries();
 		window.itineraryName = $("#addNewItin #itinName").val();
 		itinerary.set("name", window.itineraryName);
@@ -138,12 +137,17 @@ function addVenue(venue,itinToAddTo) {
 	pqresult.get(itinToAddTo, {
 		success: function(itinObject) {
 			var currentVenues = itinObject.get("venues");
+			$(".progress").css("width", "62%");
 			if (currentVenues == undefined) {
 				itinObject.set("venues", [venue]);
+				$(".progress").css("width", "80%");
 				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			} else {
+				$(".progress").css("width", "64%");
 				currentVenues.push(venue);
+				$(".progress").css("width", "70%");
 				itinObject.set("venues", currentVenues);
+				$(".progress").css("width", "80%");
 				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			}
 		}
@@ -236,12 +240,15 @@ function displayVenues(theList) {
 		$('#timepickerStart').timepicker();
 		$('#timepickerEnd').timepicker();
 		$("#venueMeta button").click(function() {
+			$(".progress").removeClass("hidden");
+			console.dir("removed hidden");
 			var currentVenue = theList.response.venues[window.currentlySelectedVenueID];
 			var startTime = convertTimeStringToHours($("#timepickerStart").val());
 			var endTime = convertTimeStringToHours($("#timepickerEnd").val());
 			currentVenue.timeStart = $("#timepickerStart").val();
 			currentVenue.timeEnd = $("#timepickerEnd").val();
 			currentVenue.description = $("#userDescription").val();
+			$(".progress").css("width", "30%");
 			
 			// We have to make another FourSquare API call to get the venue's image
 			imageFetchURL = 'https://api.foursquare.com/v2/venues/'+currentVenue.id+'/photos?client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125&limit=1'
@@ -253,9 +260,9 @@ function displayVenues(theList) {
 				} catch(err) {
 					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
 				}
+				$(".progress").css("width", "50%");
 				addVenue(currentVenue,window.currentItin);
-			});
-			
+			});			
 		})
 });	
 }
@@ -265,12 +272,15 @@ function displayItin(itinToDisplay) {
 	$("#menu-bar-items").removeClass("hide");
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
+			$(".progress").css("width", "82%");
 			window.map.markerLayer.setFilter(function(f) {
-            	return f.properties['alt'] === itinToDisplay;
+				return f.properties['alt'] === itinToDisplay;
 			});
 			$("#introHome, #introAbout, #introHelp").hide();
 			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' SquareDay</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
+			$(".progress").css("width", "85%");
+			console.dir("updated to 85");
 			var startTimes = new Array();
 			var endTimes = new Array();
 			var descriptions = new Array();
@@ -290,9 +300,11 @@ function displayItin(itinToDisplay) {
 			} else {
 				$(".itin").html(finalHTML);
 			}
+			$(".progress").css("width", "90%");
 			$("#venuesMap").animate({height:"300px"},500);
 			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")],descriptions[$(this).attr("id")],$(this).attr("id")); });
-			
+			$(".progress").css("width", "100%");
+			$(".progress").addClass("hidden");
 			// This is the button that deletes the itinerary entirely from the app.
 			$("#deleteItinButton").click(function() {
 				pqresult.get(window.currentItin, {

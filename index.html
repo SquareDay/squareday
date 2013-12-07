@@ -118,149 +118,154 @@
 					<li> Now you'll see that Murray's (or your choice of bagels) is listed in your SquareDay and a pin has been dropped on your map. </li>
 					<li> You can edit each venue as you please! They will automatically be organized by time. </li>
 				</ul>
-						
-						
-						For more detailed help & instructions download the user manual here. 
 				
-		</div>
-		
-		<div id="venuesMap"></div>
-		<div class="col-md-8 col-md-offset-2">
-			<div class="itin"></div>
-			<div class="modal fade" id="addNew" role="dialog" tabindex="-1" aria-hidden="true">
-				<div class ="modal-dialog">
-					<div class="modal-content">
+				
+				For more detailed help & instructions download the user manual here. 
+				
+			</div>
+			
+			<div id="venuesMap"></div>
+			
+			<div class="progress progress-striped active hidden">
+				<div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+			</div>
+			
+			<div class="col-md-8 col-md-offset-2">
+				<div class="itin"></div>
+				<div class="modal fade" id="addNew" role="dialog" tabindex="-1" aria-hidden="true">
+					<div class ="modal-dialog">
+						<div class="modal-content">
 
 
 
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">New Venue</h4>
-						</div>
-						<div class="modal-body">
-							<p>
-								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Where are you?" name="location" id="venueLocation">
-								</div>
-								
-								<div class="input-group">
-									<input type="text" class="form-control" placeholder="What are you looking for?" name="location" id="venueName">
-								</div>
-								
-								<div class="list-group" id="results-list">
-									<ul id="venueList"></ul>	
-									<div id="venueMeta"> 
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">New Venue</h4>
+							</div>
+							<div class="modal-body">
+								<p>
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Where are you?" name="location" id="venueLocation">
 									</div>
+									
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="What are you looking for?" name="location" id="venueName">
+									</div>
+									
+									<div class="list-group" id="results-list">
+										<ul id="venueList"></ul>	
+										<div id="venueMeta"> 
+										</div>
+									</div>
+								</p>
+							</div>
+						</div> <!--/modal dialog-->
+					</div> <!--/modal content-->
+				</div> <!--/modal fade -->
+				
+				<div class="modal fade" id="addNewItin" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">New SquareDay</h4>
+							</div>
+							<div class="modal-body">
+								<div class="input-group text-center">
+									<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
 								</div>
-							</p>
-						</div>
-					</div> <!--/modal dialog-->
-				</div> <!--/modal content-->
-			</div> <!--/modal fade -->
-			
-			<div class="modal fade" id="addNewItin" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">New SquareDay</h4>
-						</div>
-						<div class="modal-body">
-							<div class="input-group text-center">
-								<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+								<div class="input-group text-center">
+									<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
+								</div>
 							</div>
-							<div class="input-group text-center">
-								<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				
+				<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Edit Venue</h4>
 							</div>
-						</div>
-					</div><!-- /.modal-content -->
-				</div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
-			
-			<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Edit Venue</h4>
-						</div>
-						
-						<div class="input-group bootstrap-timepicker">
-							<input type="text" class="form-control" id="timepickerStart">
-							<span class="input-group-addon">to</span>
-							<input type="text" class="form-control" id="timepickerEnd">
-						</div>
-						<div class="input-group">
-							<textarea class="input-large" rows="3" placeholder="Description" id="userDescription"></textarea>
-						</div>
-						<div class="input-group">
-							<button type="button" id="editVenue" class="btn btn-primary btn-sm">Save</button>
-						</div>
-					</p>
-				</div>
-			</div> <!--/modal dialog-->
-		</div> <!--/modal content-->
-	</div> <!--/modal fade -->
-	
-	<div class="modal fade" id="addNewItin" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">New SquareDay</h4>
-				</div>
-				<div class="modal-body">
-					<div class="input-group text-center">
-						<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+							
+							<div class="input-group bootstrap-timepicker">
+								<input type="text" class="form-control" id="timepickerStart">
+								<span class="input-group-addon">to</span>
+								<input type="text" class="form-control" id="timepickerEnd">
+							</div>
+							<div class="input-group">
+								<textarea class="input-large" rows="3" placeholder="Description" id="userDescription"></textarea>
+							</div>
+							<div class="input-group">
+								<button type="button" id="editVenue" class="btn btn-primary btn-sm">Save</button>
+							</div>
+						</p>
 					</div>
-				</div>
-				<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	
-	<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Edit Venue</h4>
-				</div>
-				
-				<div class="input-group bootstrap-timepicker">
-					<input type="text" class="form-control" id="timepickerStart">
-					<span class="input-group-addon">to</span>
-					<input type="text" class="form-control" id="timepickerEnd">
-				</div>
-				
-				<div class="input-group">
-					<textarea class="input-large" rows="3" placeholder="Description" id="userDescription"></textarea>
-				</div>
-				<div class="input-group">
-					<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Submit</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	
-	<div class="modal fade" id="rename" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Rename</h4>
-				</div>
-				<div class="modal-body">
+				</div> <!--/modal dialog-->
+			</div> <!--/modal content-->
+		</div> <!--/modal fade -->
+		
+		<div class="modal fade" id="addNewItin" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">New SquareDay</h4>
+					</div>
+					<div class="modal-body">
+						<div class="input-group text-center">
+							<input type="text" class="form-control" placeholder="What should it be named?" name="itinName" id="itinName">
+						</div>
+					</div>
+					<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Add</button>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="editVenue" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Edit Venue</h4>
+					</div>
+					
+					<div class="input-group bootstrap-timepicker">
+						<input type="text" class="form-control" id="timepickerStart">
+						<span class="input-group-addon">to</span>
+						<input type="text" class="form-control" id="timepickerEnd">
+					</div>
+					
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="What would you like the name to be?" name="itinRename" id="itinRename">
+						<textarea class="input-large" rows="3" placeholder="Description" id="userDescription"></textarea>
 					</div>
-				</div>
-				<button type="button" id="renameItinButton" class="btn btn-primary btn-lg">Rename</button>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	
-</div> <!--/col-md-8 -->
+					<div class="input-group">
+						<button type="button" id="addNewItinButton" class="btn btn-primary btn-lg">Submit</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		<div class="modal fade" id="rename" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Rename</h4>
+					</div>
+					<div class="modal-body">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="What would you like the name to be?" name="itinRename" id="itinRename">
+						</div>
+					</div>
+					<button type="button" id="renameItinButton" class="btn btn-primary btn-lg">Rename</button>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+	</div> <!--/col-md-8 -->
 
 </body>
 </html>

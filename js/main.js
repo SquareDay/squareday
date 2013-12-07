@@ -87,6 +87,12 @@ window.onload = function() {
 			}
 		});
 	});
+	
+	// This adds functionality to the 'are you sure?' button
+	$('#areYouSureNoButton').click( function() {
+		$('#areYouSure').modal('hide');
+	});
+				
 }
 
 // This function searches through all the itineraries in Parse and finds the Parse ID for the one with the inputted name
@@ -258,7 +264,7 @@ function displayVenues(theList) {
 				try {
 					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
 				} catch(err) {
-					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
+					currentVenue.image = 'http://parkers.bauercdn.com/Static/Images/Forms/Colours_29x29/white.png';
 				}
 				$(".progress").css("width", "50%");
 				addVenue(currentVenue,window.currentItin);
@@ -307,22 +313,25 @@ function displayItin(itinToDisplay) {
 			$(".progress").addClass("hidden");
 			// This is the button that deletes the itinerary entirely from the app.
 			$("#deleteItinButton").click(function() {
-				pqresult.get(window.currentItin, {
-					success: function(itinObject) {
-					itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
-					changeMenu('home');
-					pqresult = new Parse.Query(Itineraries);
-					pqresult.find({
-						success:function(results) {
-							window.allItineraries = results;
-							generateItinUL(results);
-							$('#addNewItin').modal('hide');
-						}
-					});
-				}
+				$('#areYouSure').modal('show');
+				$('#areYouSureButton').click( function() {
+					$('#areYouSure').modal('hide');
+					pqresult.get(window.currentItin, {
+						success: function(itinObject) {
+						itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
+						changeMenu('home');
+						pqresult = new Parse.Query(Itineraries);
+						pqresult.find({
+							success:function(results) {
+								window.allItineraries = results;
+								generateItinUL(results);
+							}
+						});
+					}
+				});
 			});
 				
-			});
+		});
 		}
 	});
 }

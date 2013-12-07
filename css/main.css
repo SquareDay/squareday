@@ -297,6 +297,15 @@ body.modal-open {
 	text-align: center;
 }
 
+#areYouSure h4 {
+	margin:0;
+	text-align:center;
+}
+
+#areYouSure button {
+	margin:0 10px;
+}
+
 .intro-dd-list {
 	width:100%;
 }

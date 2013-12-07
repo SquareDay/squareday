@@ -45,6 +45,7 @@ window.onload = function() {
 	
 	// This is the function run when a new itinerary is to be added to SquareDay, i.e. when its name is typed in the box.
 	$("#addNewItinButton").click(function() {
+		
 		var itinerary = new Itineraries();
 		window.itineraryName = $("#addNewItin #itinName").val();
 		itinerary.set("name", window.itineraryName);
@@ -128,6 +129,8 @@ function fetchVenues(query,location) {
 		context: document.body
 	}).done( function(theList) {
 		displayVenues(theList);
+	}).error( function() {
+		$("#venueList").html('No matching venues were found on FourSquare... Try searching again.');
 	});
 }
 

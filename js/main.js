@@ -278,10 +278,16 @@ function displayItin(itinToDisplay) {
 	$("#menu-bar-items").removeClass("hide");
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
+<<<<<<< HEAD
 			$(".progress").css("width", "82%");
 			window.map.markerLayer.setFilter(function(f) {
 				return f.properties['alt'] === itinToDisplay;
 			});
+=======
+			window.map.remove();
+			window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
+			window.markers = [];
+>>>>>>> a8d301125af08e56ba33e91617534094ab37abf9
 			$("#introHome, #introAbout, #introHelp").hide();
 			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' SquareDay</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
@@ -302,6 +308,7 @@ function displayItin(itinToDisplay) {
 				}
 				$(".itin").html(finalHTML);
 				var markerLayer = L.mapbox.markerLayer(window.markers).addTo(map); // Adds markers to the map.
+				console.log(window.markers);
 				window.map.setView([window.markers[0].geometry.coordinates[1]-.2,window.markers[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
 			} else {
 				$(".itin").html(finalHTML);

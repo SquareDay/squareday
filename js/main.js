@@ -17,10 +17,9 @@ pqresult.find({
 // When the DOM is finished loading, we have a bunch of functions that need to run.
 window.onload = function() {
 	
-	
-	
 	// First, this is a call to the Mapbox API to load the map in the background.
 	window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
+	window.markers = new Array(); // Variable to later store markers of venues in.
 	
 	// This is a jquery command that runs every time another key is typed in the venue search box.
 	$("#venueName").keyup(function() {
@@ -141,11 +140,11 @@ function addVenue(venue,itinToAddTo) {
 			var currentVenues = itinObject.get("venues");
 			if (currentVenues == undefined) {
 				itinObject.set("venues", [venue]);
-				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			} else {
 				currentVenues.push(venue);
 				itinObject.set("venues", currentVenues);
-				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			}
 		}
 	});
@@ -255,8 +254,6 @@ function displayVenues(theList) {
 					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
 				}
 				addVenue(currentVenue,window.currentItin);
-				displayItin(window.currentItin);
-				$('#addNew').modal('hide');
 			});
 			
 		})
@@ -268,30 +265,28 @@ function displayItin(itinToDisplay) {
 	$("#menu-bar-items").removeClass("hide");
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
-			window.map.markerLayer.eachLayer(  
-   				function(l) { map.markerLayer.removeLayer(l); } // This deletes all markers currently on the map.
-   				);
+			window.map.markerLayer.setFilter(function(f) {
+            	return f.properties['alt'] === itinToDisplay;
+			});
 			$("#introHome, #introAbout, #introHelp").hide();
 			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' SquareDay</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
-			var markerObject = new Array();
 			var startTimes = new Array();
 			var endTimes = new Array();
 			var descriptions = new Array();
 			if (window.currentVenues != undefined) {
 				window.currentVenues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<window.currentVenues.length; i++) {
-					fetchImage(window.currentVenues[i].id); 
 					finalHTML = finalHTML+'<div class="panel panel-primary col-md-10"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+". "+window.currentVenues[i].location.city+", "+window.currentVenues[i].location.state+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div><div class="col-md-2"><img class="event-img" src="'+window.currentVenues[i].image+'" /></div>';
 					startTimes.push(window.currentVenues[i].timeStart);
 					endTimes.push(window.currentVenues[i].timeEnd);
 					descriptions.push(window.currentVenues[i].description);
-					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [window.currentVenues[i].location.lng, window.currentVenues[i].location.lat]}, properties: { title: window.currentVenues[i].name } };
-					markerObject.push(currentMarkerObject);
+					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [window.currentVenues[i].location.lng, window.currentVenues[i].location.lat]}, properties: { title: window.currentVenues[i].name, alt: itinToDisplay } };
+					window.markers.push(currentMarkerObject);
 				}
 				$(".itin").html(finalHTML);
-				var markerLayer = L.mapbox.markerLayer(markerObject).addTo(map); // Adds markers to the map.
-				window.map.setView([markerObject[0].geometry.coordinates[1]-.2,markerObject[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
+				var markerLayer = L.mapbox.markerLayer(window.markers).addTo(map); // Adds markers to the map.
+				window.map.setView([window.markers[0].geometry.coordinates[1]-.2,window.markers[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
 			} else {
 				$(".itin").html(finalHTML);
 			}
@@ -332,6 +327,9 @@ function convertTimeStringToHours(timeString) {
 	return hours;
 }
 
-function fetchImage(id) {
-	
+function removeMarkers() {
+	for (var i=0; i<window.markers.length; i++) {
+		map.removeLayer(window.markers[i]);
+	}
+	window.markers = new Array;
 }

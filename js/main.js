@@ -17,10 +17,9 @@ pqresult.find({
 // When the DOM is finished loading, we have a bunch of functions that need to run.
 window.onload = function() {
 	
-	
-	
 	// First, this is a call to the Mapbox API to load the map in the background.
 	window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
+	window.markers = new Array(); // Variable to later store markers of venues in.
 	
 	// This is a jquery command that runs every time another key is typed in the venue search box.
 	$("#venueName").keyup(function() {
@@ -88,6 +87,12 @@ window.onload = function() {
 			}
 		});
 	});
+	
+	// This adds functionality to the 'are you sure?' button
+	$('#areYouSureNoButton').click( function() {
+		$('#areYouSure').modal('hide');
+	});
+				
 }
 
 // This function searches through all the itineraries in Parse and finds the Parse ID for the one with the inputted name
@@ -128,6 +133,8 @@ function fetchVenues(query,location) {
 		context: document.body
 	}).done( function(theList) {
 		displayVenues(theList);
+	}).error( function() {
+		$("#venueList").html('No matching venues were found on FourSquare... Try searching again.');
 	});
 }
 
@@ -136,13 +143,18 @@ function addVenue(venue,itinToAddTo) {
 	pqresult.get(itinToAddTo, {
 		success: function(itinObject) {
 			var currentVenues = itinObject.get("venues");
+			$(".progress").css("width", "62%");
 			if (currentVenues == undefined) {
 				itinObject.set("venues", [venue]);
-				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+				$(".progress").css("width", "80%");
+				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			} else {
+				$(".progress").css("width", "64%");
 				currentVenues.push(venue);
+				$(".progress").css("width", "70%");
 				itinObject.set("venues", currentVenues);
-				itinObject.save({ success: function() { displayItin(window.currentItin) } });
+				$(".progress").css("width", "80%");
+				itinObject.save({ success: function() { displayItin(window.currentItin); $('#addNew').modal('hide'); } });
 			}
 		}
 	});
@@ -188,6 +200,7 @@ function venueEdit(classes,start,end,description,theId) {
 	}
 }
 
+// This function is called when the user attempts to edit a venue's time and description.
 function editVenueMeta(theId) {
 	var currentVenue = window.currentVenues[theId];
 	var startTime = convertTimeStringToHours($("#editVenue #timepickerStart").val());
@@ -233,12 +246,15 @@ function displayVenues(theList) {
 		$('#timepickerStart').timepicker();
 		$('#timepickerEnd').timepicker();
 		$("#venueMeta button").click(function() {
+			$(".progress").removeClass("hidden");
+			console.dir("removed hidden");
 			var currentVenue = theList.response.venues[window.currentlySelectedVenueID];
 			var startTime = convertTimeStringToHours($("#timepickerStart").val());
 			var endTime = convertTimeStringToHours($("#timepickerEnd").val());
 			currentVenue.timeStart = $("#timepickerStart").val();
 			currentVenue.timeEnd = $("#timepickerEnd").val();
 			currentVenue.description = $("#userDescription").val();
+			$(".progress").css("width", "30%");
 			
 			// We have to make another FourSquare API call to get the venue's image
 			imageFetchURL = 'https://api.foursquare.com/v2/venues/'+currentVenue.id+'/photos?client_id=YMIT5XO55EHGTOLS2Q3JOWUBBDCNJCFH2ZUFWQRPTDBI4HEE&client_secret=JXJEA205QBY2B34AKVD3EPTA0FLPPDPBUE4XXCSFIRLWWGPQ&v=20131125&limit=1'
@@ -248,13 +264,11 @@ function displayVenues(theList) {
 				try {
 					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
 				} catch(err) {
-					currentVenue.image = thePhoto.response.photos.items[0].prefix+"200x200"+thePhoto.response.photos.items[0].suffix;
+					currentVenue.image = 'http://parkers.bauercdn.com/Static/Images/Forms/Colours_29x29/white.png';
 				}
+				$(".progress").css("width", "50%");
 				addVenue(currentVenue,window.currentItin);
-				displayItin(window.currentItin);
-				$('#addNew').modal('hide');
-			});
-			
+			});			
 		})
 });	
 }
@@ -264,54 +278,64 @@ function displayItin(itinToDisplay) {
 	$("#menu-bar-items").removeClass("hide");
 	pqresult.get(itinToDisplay, {
 		success: function(itinObject) {
-			window.map.markerLayer.eachLayer(  
-   				function(l) { map.markerLayer.removeLayer(l); } // This deletes all markers currently on the map.
-   				);
+			$(".progress").css("width", "82%");
+			window.map.markerLayer.setFilter(function(f) {
+				return f.properties['alt'] === itinToDisplay;
+			});
+			window.map.remove();
+			window.map = L.mapbox.map('venuesMap', 'nilkanthjp.gejogbbl');
+			window.markers = [];
 			$("#introHome, #introAbout, #introHelp").hide();
-			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' Itinerary</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
+			var finalHTML = '<div class="row"><div class="col-md-6"><h2>'+itinObject.get("name")+' SquareDay</h2></div><div class="col-md-6"><div class="btn-toolbar"><button id="addNewButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addNew">Add New Venue</button><button id="renameItinButton" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#rename">Rename</button><button id="deleteItinButton" class="btn btn-primary btn-lg">Delete</button></div></div></div>';
 			window.currentVenues = itinObject.get("venues");
-			var markerObject = new Array();
+			$(".progress").css("width", "85%");
+			console.dir("updated to 85");
 			var startTimes = new Array();
 			var endTimes = new Array();
 			var descriptions = new Array();
 			if (window.currentVenues != undefined) {
 				window.currentVenues.sort(function(a,b){return Date.parse('05/08/1992 ' + a.timeStart) - Date.parse('05/08/1992 ' + b.timeStart)});
 				for (var i=0; i<window.currentVenues.length; i++) {
-					fetchImage(window.currentVenues[i].id); 
 					finalHTML = finalHTML+'<div class="panel panel-primary col-md-10"><div class="panel-heading"><div class="row"><div class="col-md-6"><h3 class="panel-title">'+window.currentVenues[i].name+'</h3></div><div class="col-md-6 text-right"><span class="event-edit glyphicon glyphicon-pencil" id="'+i+'" data-toggle="modal" data-target="#editVenue"></span><span class="event-edit glyphicon glyphicon-remove" id="'+i+'"></span></div></div></div><div class="panel-body"><span class="event-time pull-left">'+window.currentVenues[i].timeStart+' - '+window.currentVenues[i].timeEnd+'</span><span class="event-loc pull-right">'+window.currentVenues[i].location.address+". "+window.currentVenues[i].location.city+", "+window.currentVenues[i].location.state+'</span><br><p>'+window.currentVenues[i].description+'</p></div></div><div class="col-md-2"><img class="event-img" src="'+window.currentVenues[i].image+'" /></div>';
 					startTimes.push(window.currentVenues[i].timeStart);
 					endTimes.push(window.currentVenues[i].timeEnd);
 					descriptions.push(window.currentVenues[i].description);
-					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [window.currentVenues[i].location.lng, window.currentVenues[i].location.lat]}, properties: { title: window.currentVenues[i].name } };
-					markerObject.push(currentMarkerObject);
+					var currentMarkerObject = { type: 'Feature', geometry: { type: 'Point', coordinates: [window.currentVenues[i].location.lng, window.currentVenues[i].location.lat]}, properties: { title: window.currentVenues[i].name, alt: itinToDisplay } };
+					window.markers.push(currentMarkerObject);
 				}
 				$(".itin").html(finalHTML);
-				var markerLayer = L.mapbox.markerLayer(markerObject).addTo(map); // Adds markers to the map.
-				window.map.setView([markerObject[0].geometry.coordinates[1]-.2,markerObject[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
+				var markerLayer = L.mapbox.markerLayer(window.markers).addTo(map); // Adds markers to the map.
+				console.log(window.markers);
+				window.map.setView([window.markers[0].geometry.coordinates[1]-.2,window.markers[0].geometry.coordinates[0]+.2], 10) // Centers map on the first marker.
 			} else {
 				$(".itin").html(finalHTML);
 			}
+			$(".progress").css("width", "90%");
 			$("#venuesMap").animate({height:"300px"},500);
 			$(".itin .glyphicon").click(function() { venueEdit($(this).attr("class"),startTimes[$(this).attr("id")],endTimes[$(this).attr("id")],descriptions[$(this).attr("id")],$(this).attr("id")); });
-			
+			$(".progress").css("width", "100%");
+			$(".progress").addClass("hidden");
 			// This is the button that deletes the itinerary entirely from the app.
 			$("#deleteItinButton").click(function() {
-				pqresult.get(window.currentItin, {
-					success: function(itinObject) {
-					itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
-					changeMenu('home');
-					pqresult = new Parse.Query(Itineraries);
-					pqresult.find({
-						success:function(results) {
-							window.allItineraries = results;
-							generateItinUL(results);
-							$('#addNewItin').modal('hide');
-						}
-					});
-				}
+				$('#areYouSure').modal('show');
+				$('#areYouSureButton').click( function() {
+					$('#areYouSure').modal('hide');
+					pqresult.get(window.currentItin, {
+						success: function(itinObject) {
+						itinObject.destroy(); // This is the Parse call that destroys the current itinerary.
+						changeMenu('home');
+						pqresult = new Parse.Query(Itineraries);
+						pqresult.find({
+							success:function(results) {
+								window.allItineraries = results;
+								generateItinUL(results);
+							}
+						});
+					}
+				});
 			});
 				
-			});
+		});
 		}
 	});
 }
@@ -328,6 +352,9 @@ function convertTimeStringToHours(timeString) {
 	return hours;
 }
 
-function fetchImage(id) {
-	
+function removeMarkers() {
+	for (var i=0; i<window.markers.length; i++) {
+		map.removeLayer(window.markers[i]);
+	}
+	window.markers = new Array;
 }

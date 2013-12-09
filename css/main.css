@@ -181,7 +181,7 @@ body.modal-open {
 	margin-bottom:10px;
 }
 
-#addNewItinbutton {
+#addNewItinbutton, #renameItinModalButton {
 	font-size:12px;
 	padding:5px;
 	width:100%;

@@ -69,7 +69,7 @@ window.onload = function() {
 	})
 	
 	// This function is run when the rename button is clicked on the "rename itin" modal dialog
-	$("#renameItinButton").click(function() {
+	$("#renameItinModalButton").click(function() {
 		pqresult.get(window.currentItin, {
 			success: function(itinObject) {
 				itinObject.set("name", $("#itinRename").val());
